@@ -3,7 +3,7 @@
 **Status:** APPROVED FOR BASELINE  
 **Audit Date:** 2026-09-02  
 **Skill Version:** 1.1.0  
-**Baseline Snapshot Reference:** `architecture-skill-enterprise-v1.1 / SKILL.md`  
+**Baseline Snapshot Reference:** `architecture-skill-enterprise-v1.1 / SKILL.md` — Git tag `v1.1.0` at `https://github.com/Sushma-celestail/SKILL.git`  
 **Approver Role:** Skill Owner / Architecture Lead  
 **Approver Name:** _(to be recorded when confirmed)_
 
@@ -77,7 +77,7 @@ present. JSON structure matched §46 schema.
 | GAP-008 | JSON Schema file for §46 output validation — not implemented | Phase 4 |
 | GAP-009 | Source Index Contract definition in §60 — under-specified | Phase 2 |
 | GAP-010 | `tier_override` field absent from §41 and §61 schemas | Phase 3 |
-| GAP-011 | Git repository not initialised — no tag-based baseline yet | Phase 5 |
+| GAP-011 | Git repository not initialised — no tag-based baseline yet | ✅ Resolved — repo: `https://github.com/Sushma-celestail/SKILL.git`, tag: `v1.1.0` |
 | GAP-012 | Named approver not yet assigned — role placeholder only | Phase 5 |
 | GAP-013 | CI pipeline absent — release checklist is manual | Phase 5 |
 | GAP-014 | Runtime monitoring and metrics infrastructure — absent | Phase 5 |

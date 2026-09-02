@@ -1,0 +1,12 @@
+{
+  "record_type": "source_hash",
+  "skill_version": "1.2.0",
+  "prd_path": "C:\\Users\\sushma.s\\Desktop\\Phases\\phase2\\PRD-service-desk-v1.md",
+  "prd_filename": "PRD-service-desk-v1.md",
+  "prd_sha256": "8d28cdea942ebaf9655fc33f598f78e0b9c44b39b706a42e0ae4460fb477d67e",
+  "indexed_at": "2026-09-02T11:31:00.293Z",
+  "requirement_count": 601,
+  "stale_attachments": 0,
+  "integrity_status": "clean",
+  "usage_instruction": "Compare prd_sha256 against this record before using the index. If hashes differ, the PRD changed after indexing — re-run index_prd.js."
+}

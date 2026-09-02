@@ -1,6 +1,6 @@
 {
     "skill_name": "architecture-skill",
-    "skill_version": "1.1.0",
+    "skill_version": "1.2.0",
     "release_date": "2026-09-02",
     "status": "enterprise-governed-specification",
     "description": "Transforms a documented PRD into a complete, explainable, validated software architecture. Produces both human-readable (.md, .docx) and machine-readable (JSON) artifacts.",
@@ -10,9 +10,16 @@
     ],
     "external_references": [],
     "operational_readiness": "specified-not-yet-operational",
-    "maturity_phase": "Phase 1 — Baseline Establishment",
+    "maturity_phase": "Phase 2 — Source Indexing and Context Efficiency",
     "approver": "Skill Owner / Architecture Lead",
     "changelog": [
+        {
+            "version": "1.2.0",
+            "date": "2026-09-02",
+            "summary": "Phase 2: Added Source Index Contract to §60 (formal JSON schema for requirement inventory + source hash record + integrity rules + tooling reference). Implemented phase2/index_prd.js (PRD indexer + source hash generator, 601 requirements extracted from Service Desk PRD) and phase2/stale-source-detect.js (stale source / hash mismatch detector). Closes GAP-009.",
+            "compatibility_impact": "Additive. §60 gains the Source Index Contract subsection and tooling reference. No existing sections removed or renamed.",
+            "approver": "Skill Owner / Architecture Lead"
+        },
         {
             "version": "1.1.0",
             "date": "2026-09-02",

@@ -2509,7 +2509,56 @@ Current/target designation
 Open-question/blocker references
 ```
 
-Execution rules:
+### Source Index Contract
+
+Every enterprise run against a PRD with more than 10 requirements MUST
+produce a structured requirement inventory before architecture synthesis
+begins. The minimum record per requirement is:
+
+```json
+{
+  "source_locator":    "<section heading>:L<line number>",
+  "requirement_id":    "<explicit PRD ID or AUTO-xx-xxx>",
+  "title":             "<requirement text, max 120 chars>",
+  "type":              "<functional|non_functional|security|performance|integration|data|business_rule|actor>",
+  "source_status":     "<prd_stated|architecturally_derived|proposed|blocked>",
+  "module":            "<section or capability group>",
+  "current_or_target": "<current_state|target_state>",
+  "open_question_ids": ["<Q-xxx or B-xxx references>"]
+}
+```
+
+The index MUST be accompanied by a source hash record:
+
+```json
+{
+  "record_type":    "source_hash",
+  "skill_version":  "<version>",
+  "prd_path":       "<absolute or relative path>",
+  "prd_sha256":     "<SHA-256 hash of the PRD file>",
+  "indexed_at":     "<ISO-8601 timestamp>",
+  "requirement_count": 0
+}
+```
+
+### Source Index Integrity Rules
+
+The following rules apply to every run that uses a source index:
+
+* The `prd_sha256` in the source hash record MUST be checked against the
+  current PRD file before architecture synthesis begins. If the hashes differ,
+  stop and report a stale-source warning — do not proceed with a mismatched
+  source.
+* A moved, missing, or stale source path is an input-integrity failure.
+  Locate the user-provided source again or stop and ask; never substitute a
+  similarly named document.
+* Every requirement in the inventory must have a `source_locator` that
+  identifies where in the PRD it was found. IDs without locators cannot
+  satisfy §52 step 36 citation verification.
+* The inventory is read-only after it is created. Architecture synthesis
+  reads from it; it does not update it.
+
+### Execution rules
 
 * Read and extract in bounded sections, as required by §52 step 6.
 * Persist the extracted requirement inventory before moving to architecture
@@ -2524,6 +2573,22 @@ Execution rules:
   validation generation so the artifacts do not drift.
 * Prefer a concise source excerpt or locator over repeatedly embedding large
   source passages in every output section.
+
+### Tooling (Phase 2 implementation)
+
+The following tools implement this contract:
+
+```text
+phase2/index_prd.js          PRD indexer + source hash generator
+phase2/stale-source-detect.js  Stale source / hash mismatch detector
+```
+
+Run order:
+
+```text
+node phase2/index_prd.js --prd <prd.md> --out phase2/indexes
+node phase2/stale-source-detect.js --prd <prd.md> --index phase2/indexes/prd-index-<date>.json
+```
 
 Efficiency must never remove a requirement, weaken citation verification, or
 cause a proposal to be represented as a PRD fact.

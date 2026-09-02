@@ -204,7 +204,7 @@ doc.add_paragraph()
 
 cover_title = doc.add_paragraph()
 cover_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = cover_title.add_run("Architecture Skill — Phase 1")
+r = cover_title.add_run("Architecture Skill — Phase 1 & 2")
 r.bold = True
 r.font.size = Pt(28)
 r.font.color.rgb = DARK_BLUE
@@ -922,16 +922,301 @@ add_table(
 )
 
 # ═══════════════════════════════════════════════════════════════════════════════
-#  FOOTER NOTE
+#  PHASE 2 SECTION — SOURCE INDEXING AND CONTEXT EFFICIENCY
+# ═══════════════════════════════════════════════════════════════════════════════
+
+doc.add_page_break()
+heading("Phase 2 — Source Indexing and Context Efficiency", 1, color=MID_BLUE)
+
+body("Phase 2 gives the skill the ability to read large PRDs reliably, prove which "
+     "PRD version was used, and detect when a source has changed after architecture "
+     "work began. Without Phase 2, the skill could silently process a stale or "
+     "wrong PRD and produce an architecture that traces to the wrong source.")
+
+doc.add_paragraph()
+body("One sentence summary:", bold=True)
+body("  \u201cIndex the PRD before you design from it, and prove the hash matches every time.\u201d",
+     italic=True, color=MID_BLUE, size=12)
+
+doc.add_paragraph()
+
+# ── What was already in the skill ─────────────────────────────────────────────
+heading("What Was Already in the Skill (Specified)", 2)
+body("These behaviours were written into SKILL.md before Phase 2 tooling existed. "
+     "They were instructions the AI was expected to follow manually.")
+doc.add_paragraph()
+add_table(
+    ["Skill Section", "Behaviour Already Specified"],
+    [
+        ("§52 step 6",  "Read PRD in bounded sections, not one large pass. Extract requirement-by-requirement."),
+        ("§52 step 36", "Return to the literal PRD source text to verify every requirement citation before delivery."),
+        ("§38",         "Calibrate output depth (Tier 1/2/3) based on PRD size and complexity."),
+        ("§60",         "Use a source index for large PRDs. Persist the inventory before synthesis. Never substitute a stale source."),
+        ("§58",         "Record source name, received time, and content hash. Preserve source as read-only evidence."),
+    ],
+    col_widths=[3, 14.5]
+)
+
+# ── What was missing ──────────────────────────────────────────────────────────
+heading("What Was Missing — The Phase 2 Gap", 2)
+body("The instructions existed but no tool enforced them. The AI had no way to "
+     "automatically produce a structured inventory, record a hash, or detect a "
+     "stale source. Every run was manual and unverifiable.")
+doc.add_paragraph()
+add_table(
+    ["Gap ID", "Missing Capability", "Why It Matters"],
+    [
+        ("GAP-009", "Source Index Contract (§60 under-specified)",
+         "No formal JSON schema existed. The AI could produce any format or skip the index entirely."),
+        ("—",       "PRD indexer (index_prd.js)",
+         "No tool parsed the PRD into a structured, locator-stamped requirement inventory."),
+        ("—",       "Source hash generator",
+         "No tool recorded the SHA-256 of the PRD at index time — impossible to detect tampering or drift."),
+        ("—",       "Stale-source detector",
+         "Nothing compared the stored hash against the current PRD before architecture synthesis began."),
+        ("—",       "Attachment/stale-path checker",
+         "No check that referenced attachments in the PRD actually existed on disk."),
+    ],
+    col_widths=[2, 5.5, 10]
+)
+
+# ── What was built ─────────────────────────────────────────────────────────────
+heading("What Was Built in Phase 2", 2)
+doc.add_paragraph()
+p2_files = [
+    ("SKILL.md §60 — Source Index Contract",
+     "Spec / SKILL.md",
+     "Closes GAP-009",
+     "Formal JSON schemas for requirement inventory record and source hash record. "
+      "Source Index Integrity Rules. Tooling reference. Now a machine-enforceable contract, not a suggestion."),
+    ("phase2/index_prd.js",
+     "Node.js tool",
+     "Phase 2 / GAP-009",
+     "PRD indexer + source hash generator. Parses any Markdown PRD section-by-section. "
+      "Handles plain IDs (FR-001), escaped IDs (FR\\-001 from Word extraction), and table-cell IDs. "
+      "Produces structured requirement inventory JSON + source hash record JSON."),
+    ("phase2/stale-source-detect.js",
+     "Node.js tool",
+     "Phase 2",
+     "Stale source detector. Compares current PRD SHA-256 against the hash stored in "
+      "a prd-index or architecture artifact. Hard-stops with a clear error if hashes differ."),
+    ("phase2/extract_prd.py",
+     "Python helper",
+     "Phase 2",
+     "Converts PRD .docx files to Markdown using mammoth so index_prd.js can parse them. "
+      "Required because the Service Desk PRD is a Word document."),
+    ("phase2/PRD-service-desk-v1.md",
+     "Extracted PRD",
+     "Phase 2 / T-001",
+     "Markdown extraction of the Internal Service Desk PRD v1. Used as the first "
+      "real PRD input for the indexer. Becomes the basis for T-001 test fixture in Phase 4."),
+    ("phase2/indexes/prd-index-2026-09-02.json",
+     "Live index output",
+     "Phase 2",
+     "First real index run output. 601 requirements extracted, 597 with explicit IDs "
+      "(FR-xxx, NFR-xxx, BR-xxx, OQ-xxx). 372 sections parsed. ~51,791 estimated tokens."),
+    ("phase2/indexes/prd-source-hash-2026-09-02.json",
+     "Source hash record",
+     "Phase 2",
+     "SHA-256 baseline for the Service Desk PRD. Used by stale-source-detect.js "
+      "to confirm the PRD has not changed since indexing."),
+]
+add_table(
+    ["File / Deliverable", "Type", "Linked To", "What It Does"],
+    p2_files,
+    col_widths=[5, 2.5, 2.5, 7.5]
+)
+
+# ── Phase 2 workflow ───────────────────────────────────────────────────────────
+doc.add_page_break()
+heading("Phase 2 Workflow — How It Works End to End", 2)
+
+flow_diagram([
+    ("Input: PRD file (.docx or .md)",
+     "The approved, current Product Requirements Document"),
+    ("Step 1: Extract to Markdown (if .docx)",
+     "python phase2/extract_prd.py  →  phase2/PRD-<name>.md"),
+    ("Step 2: Run PRD Indexer",
+     "node phase2/index_prd.js --prd <prd.md> --out phase2/indexes"),
+    ("Step 3: Indexer parses sections",
+     "372 sections parsed. Bounded, section-by-section — §52 step 6 compliant"),
+    ("Step 4: Indexer extracts requirements",
+     "601 requirements with source_locator (section:Lnnn), type, status, module"),
+    ("Step 5: Indexer records SHA-256 hash",
+     "prd-source-hash-<date>.json — proof of exactly which PRD version was used"),
+    ("Step 6: Run Stale Source Detector (before any architecture run)",
+     "node phase2/stale-source-detect.js --prd <prd.md> --index <prd-index.json>"),
+    ("Step 7: Hash check result",
+     "✅ SOURCE CURRENT → proceed  |  ❌ STALE SOURCE → stop, locate correct PRD"),
+    ("Step 8: Architecture synthesis uses the inventory",
+     "Requirement inventory fed into §52 execution workflow. Citations verified via locators (step 36)."),
+], title="Phase 2 Execution Flow")
+
+# ── Source Index Contract explained ────────────────────────────────────────────
+heading("The Source Index Contract (§60) — Key Concepts", 2)
+
+body("Every enterprise run against a PRD with more than 10 requirements MUST "
+     "produce two JSON outputs before architecture synthesis begins.")
+doc.add_paragraph()
+
+two_col_boxes(
+    "Requirement Inventory Record (per requirement)",
+    [
+        "source_locator: section:Lnnn",
+        "requirement_id: FR-001 or AUTO-xx-xxx",
+        "title: text (max 120 chars)",
+        "type: functional | non_functional | security…",
+        "source_status: prd_stated | proposed | blocked…",
+        "module: section / capability group",
+        "current_or_target: current_state | target_state",
+        "open_question_ids: [Q-xxx, B-xxx]",
+    ],
+    "Source Hash Record (per PRD file)",
+    [
+        "record_type: source_hash",
+        "skill_version: 1.2.0",
+        "prd_path: absolute or relative path",
+        "prd_sha256: SHA-256 hash of the file",
+        "indexed_at: ISO-8601 timestamp",
+        "requirement_count: 601",
+        "integrity_status: clean | warnings",
+    ],
+    left_color=RGBColor(0x1A, 0x5E, 0x8A),
+    right_color=RGBColor(0x2E, 0x7D, 0x32),
+)
+
+# ── Integrity rules ────────────────────────────────────────────────────────────
+heading("Source Index Integrity Rules", 2)
+add_table(
+    ["Rule", "What It Prevents"],
+    [
+        ("prd_sha256 MUST be checked before synthesis begins",
+         "Stops architecture being generated from a PRD that changed after indexing."),
+        ("Missing / moved source path = input-integrity failure",
+         "Prevents silent substitution of a similarly-named but wrong document."),
+        ("Every requirement MUST have a source_locator",
+         "Makes §52 step 36 citation verification mechanically possible."),
+        ("Inventory is read-only after creation",
+         "Prevents synthesis from silently modifying the extracted requirements."),
+        ("Stale attachment = warning in report + stop if critical",
+         "Detects broken links to referenced files inside the PRD."),
+    ],
+    col_widths=[7.5, 10]
+)
+
+# ── Live results ───────────────────────────────────────────────────────────────
+heading("Live Results — Service Desk PRD Index Run", 2)
+add_table(
+    ["Metric", "Value"],
+    [
+        ("PRD source file",              "PRD Internal Service Desk Tool_V1.docx"),
+        ("SHA-256 (PRD)",                "8d28cdea942ebaf9655fc33f598f78e0b9c44b39b706a42e0ae4460fb477d67e"),
+        ("Sections parsed",              "372"),
+        ("Requirements extracted",       "601"),
+        ("  — Explicit IDs (FR/NFR/BR)", "597"),
+        ("  — Auto-assigned IDs",        "4"),
+        ("Stale attachments",            "0"),
+        ("Estimated tokens",             "~51,791"),
+        ("Integrity status",             "CLEAN ✅"),
+        ("Stale-source detector result", "✅ SOURCE CURRENT — Hashes match"),
+    ],
+    col_widths=[7, 10.5]
+)
+
+# ── What remains ──────────────────────────────────────────────────────────────
+heading("What Phase 2 Did NOT Do (Deliberately)", 2)
+add_table(
+    ["Out of Scope for Phase 2", "Belongs To", "Why"],
+    [
+        ("Token/context measurement collector",  "Phase 2 (future)", "Runtime telemetry depends on the AI runtime — not available in static tools."),
+        ("Automated requirement extraction validator", "Phase 4",    "Full validation needs the test fixtures and verify.js from Phase 4."),
+        ("Context budget enforcement",           "Phase 4",          "Enforcement requires knowing what the runtime can handle — Phase 4 concern."),
+    ],
+    col_widths=[6, 3, 8.5]
+)
+
+# ── Updated gap status ─────────────────────────────────────────────────────────
+heading("Updated Gap Status After Phase 2", 2)
+add_table(
+    ["Gap ID", "Description", "Status"],
+    [
+        ("GAP-009", "Source Index Contract in §60",           "✅ Closed — §60 now has formal schema + integrity rules"),
+        ("GAP-001", "Baseline-audit report",                  "✅ Closed in Phase 1"),
+        ("GAP-002", "Change-diff tool",                       "✅ Closed in Phase 1"),
+        ("GAP-003", "Repository health checker",              "✅ Closed in Phase 1"),
+        ("GAP-004", "Release-changelog generator",            "✅ Closed in Phase 1"),
+        ("GAP-011", "Git repository + release tag",           "✅ Closed in Phase 1"),
+        ("GAP-012", "Named approver",                         "✅ Closed in Phase 1"),
+        ("GAP-005", "V-001–V-010 runnable checks",            "⏳ Phase 4"),
+        ("GAP-006", "T-001–T-010 test fixture files",         "⏳ Phase 4"),
+        ("GAP-007", "Test runner (verify.js)",                "⏳ Phase 4"),
+        ("GAP-008", "JSON Schema for §46",                    "⏳ Phase 4"),
+        ("GAP-010", "tier_override field in §41/§61",         "⏳ Phase 3 — next"),
+        ("GAP-013", "CI pipeline",                            "⏳ Phase 5"),
+        ("GAP-014", "Runtime monitoring/metrics",             "⏳ Phase 5"),
+    ],
+    col_widths=[2, 7.5, 8]
+)
+
+# ── Updated scorecard ──────────────────────────────────────────────────────────
+doc.add_page_break()
+heading("Updated Maturity Scorecard After Phase 2", 2)
+scorecard_p2 = [
+    ("Core PRD → Architecture design",      "9.2 / 10", "Unchanged — already strong"),
+    ("PRD traceability and blocker control", "9.5 / 10", "Unchanged — already strong"),
+    ("Enterprise governance specification",  "8.8 / 10", "Unchanged"),
+    ("Context/token optimisation",           "8.0 / 10", "↑ from 7.0 — Source Index Contract + tooling implemented"),
+    ("Tier-routing approach",               "8.0 / 10", "Unchanged — Phase 3 will close remaining gap"),
+    ("Automated verification",              "3.0 / 10", "Unchanged — Phase 4 work"),
+    ("Test/regression automation",          "2.5 / 10", "Unchanged — Phase 4 work"),
+    ("Operational release readiness",       "4.0 / 10", "Unchanged — Phase 5 work"),
+]
+t = doc.add_table(rows=len(scorecard_p2) + 1, cols=3)
+t.style = 'Table Grid'
+for ci, h in enumerate(["Area", "Rating After Phase 2", "Change"]):
+    cell = t.rows[0].cells[ci]
+    shade_cell(cell, DARK_BLUE)
+    r = cell.paragraphs[0].add_run(h)
+    r.bold = True
+    r.font.color.rgb = WHITE
+    r.font.size = Pt(9.5)
+for ri, (area, rating, note) in enumerate(scorecard_p2):
+    row = t.rows[ri + 1]
+    score = float(rating.split('/')[0].strip())
+    color = GREEN if score >= 8 else (ORANGE if score >= 5 else RED)
+    shade_cell(row.cells[0], LIGHT_GRAY if ri % 2 == 0 else WHITE)
+    shade_cell(row.cells[1], WHITE)
+    shade_cell(row.cells[2], WHITE)
+    row.cells[0].paragraphs[0].add_run(area).font.size = Pt(9.5)
+    r_r = row.cells[1].paragraphs[0].add_run(rating)
+    r_r.bold = True
+    r_r.font.color.rgb = color
+    r_r.font.size = Pt(9.5)
+    row.cells[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r_n = row.cells[2].paragraphs[0].add_run(note)
+    r_n.font.size = Pt(9)
+    r_n.font.color.rgb = GREEN if note.startswith("↑") else RGBColor(0x55, 0x55, 0x55)
+for ci, w in enumerate([7, 3, 7.5]):
+    for row in t.rows:
+        row.cells[ci].width = Cm(w)
+
+doc.add_paragraph()
+body("Phase 2 lifted context/token optimisation from 7.0 to 8.0 by implementing the "
+     "Source Index Contract, PRD indexer, and stale-source detector. "
+     "The next jump will come from Phase 4 (verify.js + test fixtures).",
+     italic=True, color=MID_BLUE)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  FOOTER NOTE  (updated to v1.2.0)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 doc.add_paragraph()
 footer_p = doc.add_paragraph()
 footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 r = footer_p.add_run(
-    "Architecture Skill v1.1.0  |  Phase 1 Complete  |  "
-    "Approved: Sushma S — 2026-09-02  |  "
-    "github.com/Sushma-celestail/SKILL  tag: v1.1.0"
+    "Architecture Skill v1.2.0  |  Phase 1 & 2 Complete  |  "
+    "Approved: Sushma S \u2014 2026-09-02  |  "
+    "github.com/Sushma-celestail/SKILL  tag: v1.2.0"
 )
 r.font.size = Pt(8.5)
 r.font.color.rgb = RGBColor(0x88, 0x88, 0x88)

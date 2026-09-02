@@ -128,8 +128,8 @@ present. JSON structure matched §46 schema.
 | Field | Value |
 |---|---|
 | Approver role | Skill Owner / Architecture Lead |
-| Approver name | _(to be completed)_ |
-| Approval date | _(to be completed)_ |
+| Approver name | Sushma S |
+| Approval date | 02-09-2026 |
 | Conditions | None — baseline is approved as-is with gaps documented above |
 
 > **This report is read-only evidence once signed off.**

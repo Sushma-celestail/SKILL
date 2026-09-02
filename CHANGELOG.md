@@ -8,6 +8,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [1.3.0] — 2026-09-02
+
+**Summary:** Phase 3: Implemented deterministic tier routing, validated tier overrides, seven Tier 1/2/3 fixtures, a repeatable routing test runner, and a live Tier 3 routing record for the Service Desk PRD index. Added routing evidence fields to §§41, 59, and 61.
+
+**Compatibility impact:** Additive. Tier selection is now recorded as evidence; existing depth-calibration guidance remains in place.
+
+**Approver:** Skill Owner / Architecture Lead
+
+---
+
 ## [1.2.0] — 2026-09-02
 
 **Summary:** Phase 2: Added Source Index Contract to §60 (formal JSON schema for requirement inventory + source hash record + integrity rules + tooling reference). Implemented phase2/index_prd.js (PRD indexer + source hash generator, 601 requirements extracted from Service Desk PRD) and phase2/stale-source-detect.js (stale source / hash mismatch detector). Closes GAP-009.

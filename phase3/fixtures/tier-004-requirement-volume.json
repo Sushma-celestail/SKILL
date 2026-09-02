@@ -1,0 +1,5 @@
+{
+  "id": "TR-004",
+  "input": { "metadata": { "explicit_id_count": 47 }, "signals": { "module_count": 4, "mode": "application" } },
+  "expected": { "initial_tier": 3, "selected_tier": 3, "override_applied": false }
+}

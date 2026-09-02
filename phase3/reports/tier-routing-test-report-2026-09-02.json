@@ -1,0 +1,114 @@
+{
+  "phase": 3,
+  "generated_at": "2026-09-02T12:17:06.469Z",
+  "total": 7,
+  "passed": 7,
+  "failed": 0,
+  "results": [
+    {
+      "id": "TR-001",
+      "file": "tier-001-small-module.json",
+      "expected": {
+        "initial_tier": 1,
+        "selected_tier": 1,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 1,
+        "selected_tier": 1,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-002",
+      "file": "tier-002-standard-application.json",
+      "expected": {
+        "initial_tier": 2,
+        "selected_tier": 2,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 2,
+        "selected_tier": 2,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-003",
+      "file": "tier-003-material-module.json",
+      "expected": {
+        "initial_tier": 2,
+        "selected_tier": 2,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 2,
+        "selected_tier": 2,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-004",
+      "file": "tier-004-requirement-volume.json",
+      "expected": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-005",
+      "file": "tier-005-migration-integrations.json",
+      "expected": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-006",
+      "file": "tier-006-access-lifecycle.json",
+      "expected": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "actual": {
+        "initial_tier": 3,
+        "selected_tier": 3,
+        "override_applied": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "TR-007",
+      "file": "tier-007-approved-override.json",
+      "expected": {
+        "initial_tier": 3,
+        "selected_tier": 2,
+        "override_applied": true
+      },
+      "actual": {
+        "initial_tier": 3,
+        "selected_tier": 2,
+        "override_applied": true
+      },
+      "status": "PASS"
+    }
+  ]
+}

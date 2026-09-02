@@ -1,0 +1,11 @@
+{
+  "id": "TR-007",
+  "input": { "metadata": { "explicit_id_count": 42 }, "signals": { "module_count": 1, "mode": "module" } },
+  "override": {
+    "selected_tier": 2,
+    "reason": "The explicitly identified requirements are narrow CRUD variants for one bounded module and do not add independent architectural boundaries.",
+    "source_evidence": ["Module scope: L42", "FR-001 through FR-042"],
+    "approver": "Architecture Lead"
+  },
+  "expected": { "initial_tier": 3, "selected_tier": 2, "override_applied": true }
+}

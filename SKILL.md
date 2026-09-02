@@ -1314,6 +1314,9 @@ Architecture Version: v1.0
 PRD Version/Date: <provided or not specified>
 Mode: application | module
 Depth Tier: 1 | 2 | 3
+Initial Depth Tier: 1 | 2 | 3 | not recorded
+Tier Routing Record: <path or not recorded>
+Tier Override: none | <initial tier -> selected tier and reason reference>
 Supersedes: N/A
 Changelog: Initial architecture
 ```
@@ -2490,6 +2493,52 @@ Reason for override
 Approver, if required by local policy
 ```
 
+### Tier Routing Record
+
+For Enterprise Execution Mode, record the initial decision and any override
+as a machine-readable evidence record. The minimum record is:
+
+```json
+{
+  "record_type": "tier_routing",
+  "schema_version": "phase3-v1",
+  "source_index": "",
+  "source_hash": "",
+  "signals": {
+    "significant_requirement_count": 0,
+    "module_count": 0,
+    "integration_count": 0,
+    "has_migration": false,
+    "has_multi_actor_access": false,
+    "has_material_lifecycle": false,
+    "has_reporting_or_deployment_constraints": false
+  },
+  "initial_decision": { "tier": 0, "reasons": [] },
+  "tier_override": null,
+  "selected_tier": 0
+}
+```
+
+The routing record is evidence about selection depth. It does not replace the
+PRD, the requirement inventory, or architecture judgment. Signals not safely
+derivable from the PRD index must be supplied with PRD evidence rather than
+invented or guessed.
+
+### Tooling (Phase 3 implementation)
+
+```text
+phase3/tier-routing.js             Deterministic Tier 1/2/3 selection and override validation
+phase3/run-tier-routing-tests.js   Fixture runner and evidence-report generator
+phase3/fixtures/                   Tier-routing cases, including an approved override
+```
+
+Run order:
+
+```text
+node phase3/tier-routing.js --index <prd-index.json> --out <tier-routing-record.json>
+node phase3/run-tier-routing-tests.js
+```
+
 Do not increase a tier merely to produce a longer document.
 
 ## 60. CONTEXT AND TOKEN EFFICIENCY
@@ -2610,6 +2659,14 @@ Minimum fields:
   "completed_at": "",
   "mode": "application | module",
   "depth_tier": 0,
+  "tier_routing": {
+    "record_path": "",
+    "initial_tier": 0,
+    "selected_tier": 0,
+    "override_applied": false,
+    "override_reason": "",
+    "override_evidence": []
+  },
   "source_documents": [
     {
       "name": "",

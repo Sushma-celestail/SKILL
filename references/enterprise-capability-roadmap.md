@@ -110,19 +110,22 @@ An expert override is permitted only when recorded with initial tier, selected
 tier, source evidence, and reason. This prevents blind threshold-following
 while keeping routing repeatable.
 
-### External capabilities required but not implemented by `SKILL.md`
+### Implemented external capabilities
 
 ```text
-Tier-routing function
-Tier override record validator
-Tier-selection test fixtures
+phase3/tier-routing.js — deterministic selection from a Phase 2 index or controlled routing input
+Tier override validation — requires a materially justified reason and PRD evidence
+phase3/fixtures/ — seven Tier 1/2/3 and override fixtures
+phase3/run-tier-routing-tests.js — repeatable fixture runner and JSON/Markdown report
 ```
 
 ### Completion evidence
 
 ```text
-Tier result for every test fixture
-Reason record for every override
+Seven fixture results with expected initial and selected tiers
+Tier-routing test report
+Service Desk live Tier 3 routing record generated from its Phase 2 index
+Override fixture containing initial tier, selected tier, reason, evidence, and approver
 ```
 
 ## Phase 4 — Verification and Regression Testing

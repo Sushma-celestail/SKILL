@@ -1,38 +1,65 @@
 {
-    "skill_name": "architecture-skill",
-    "skill_version": "1.2.0",
-    "release_date": "2026-09-02",
-    "status": "enterprise-governed-specification",
-    "description": "Transforms a documented PRD into a complete, explainable, validated software architecture. Produces both human-readable (.md, .docx) and machine-readable (JSON) artifacts.",
-    "canonical_file": "SKILL.md",
-    "references": [
-        "references/enterprise-capability-roadmap.md"
+  "skill_name": "architecture-skill",
+  "skill_version": "1.3.0",
+  "release_date": "2026-09-02",
+  "status": "enterprise-governed-specification",
+  "description": "Transforms a documented PRD into a complete, explainable, validated software architecture. Produces both human-readable (.md, .docx) and machine-readable (JSON) artifacts.",
+  "canonical_file": "SKILL.md",
+  "references": [
+    "references/enterprise-capability-roadmap.md"
+  ],
+  "external_references": [],
+  "operational_readiness": "specified-not-yet-operational",
+  "maturity_phase": "Phase 3 — Deterministic Tier Routing",
+  "approver": "Skill Owner / Architecture Lead",
+  "changelog": [
+    {
+      "version": "1.3.0",
+      "date": "2026-09-02",
+      "summary": "Phase 3: Implemented deterministic tier routing, validated tier overrides, seven Tier 1/2/3 fixtures, a repeatable routing test runner, and a live Tier 3 routing record for the Service Desk PRD index. Added routing evidence fields to §§41, 59, and 61.",
+      "compatibility_impact": "Additive. Tier selection is now recorded as evidence; existing depth-calibration guidance remains in place.",
+      "approver": "Skill Owner / Architecture Lead"
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-09-02",
+      "summary": "Phase 2: Added Source Index Contract to §60 (formal JSON schema for requirement inventory + source hash record + integrity rules + tooling reference). Implemented phase2/index_prd.js (PRD indexer + source hash generator, 601 requirements extracted from Service Desk PRD) and phase2/stale-source-detect.js (stale source / hash mismatch detector). Closes GAP-009.",
+      "compatibility_impact": "Additive. §60 gains the Source Index Contract subsection and tooling reference. No existing sections removed or renamed.",
+      "approver": "Skill Owner / Architecture Lead"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-09-02",
+      "summary": "Added enterprise operating model (§57–§67), deterministic tier routing (§59), automated verification rules (§62), test/regression suite categories (§63), failure recovery (§64), human review and approval rules (§65), monitoring and metrics (§66), enterprise release checklist (§67), and Phase 1 baseline establishment (§68).",
+      "compatibility_impact": "Additive. No existing architecture output fields were removed or renamed.",
+      "approver": "Skill Owner / Architecture Lead"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-08-31",
+      "summary": "Initial enterprise skill specification. Core PRD-to-architecture design, traceability, validation, and downstream handoff.",
+      "compatibility_impact": "N/A — initial release.",
+      "approver": "Skill Owner / Architecture Lead"
+    }
+  ],
+  "implemented_capabilities": {
+    "phase_1": [
+      "baseline audit",
+      "change diff",
+      "health check",
+      "changelog"
     ],
-    "external_references": [],
-    "operational_readiness": "specified-not-yet-operational",
-    "maturity_phase": "Phase 2 — Source Indexing and Context Efficiency",
-    "approver": "Skill Owner / Architecture Lead",
-    "changelog": [
-        {
-            "version": "1.2.0",
-            "date": "2026-09-02",
-            "summary": "Phase 2: Added Source Index Contract to §60 (formal JSON schema for requirement inventory + source hash record + integrity rules + tooling reference). Implemented phase2/index_prd.js (PRD indexer + source hash generator, 601 requirements extracted from Service Desk PRD) and phase2/stale-source-detect.js (stale source / hash mismatch detector). Closes GAP-009.",
-            "compatibility_impact": "Additive. §60 gains the Source Index Contract subsection and tooling reference. No existing sections removed or renamed.",
-            "approver": "Skill Owner / Architecture Lead"
-        },
-        {
-            "version": "1.1.0",
-            "date": "2026-09-02",
-            "summary": "Added enterprise operating model (§57–§67), deterministic tier routing (§59), automated verification rules (§62), test/regression suite categories (§63), failure recovery (§64), human review and approval rules (§65), monitoring and metrics (§66), enterprise release checklist (§67), and Phase 1 baseline establishment (§68).",
-            "compatibility_impact": "Additive. No existing architecture output fields were removed or renamed.",
-            "approver": "Skill Owner / Architecture Lead"
-        },
-        {
-            "version": "1.0.0",
-            "date": "2026-08-31",
-            "summary": "Initial enterprise skill specification. Core PRD-to-architecture design, traceability, validation, and downstream handoff.",
-            "compatibility_impact": "N/A — initial release.",
-            "approver": "Skill Owner / Architecture Lead"
-        }
+    "phase_2": [
+      "source index contract",
+      "PRD indexer",
+      "source hash",
+      "stale source detector"
+    ],
+    "phase_3": [
+      "tier routing",
+      "override validation",
+      "routing fixtures",
+      "routing test report"
     ]
+  }
 }

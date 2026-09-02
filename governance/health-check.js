@@ -32,6 +32,8 @@ const REQUIRED_FILES = [
     'SKILL.md',
     'skill-manifest.json',
     'references/enterprise-capability-roadmap.md',
+    'phase3/tier-routing.js',
+    'phase3/run-tier-routing-tests.js',
 ];
 
 // Files that are expected once the full package is assembled

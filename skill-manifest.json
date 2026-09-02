@@ -1,0 +1,31 @@
+{
+    "skill_name": "architecture-skill",
+    "skill_version": "1.1.0",
+    "release_date": "2026-09-02",
+    "status": "enterprise-governed-specification",
+    "description": "Transforms a documented PRD into a complete, explainable, validated software architecture. Produces both human-readable (.md, .docx) and machine-readable (JSON) artifacts.",
+    "canonical_file": "SKILL.md",
+    "references": [
+        "references/enterprise-capability-roadmap.md"
+    ],
+    "external_references": [],
+    "operational_readiness": "specified-not-yet-operational",
+    "maturity_phase": "Phase 1 — Baseline Establishment",
+    "approver": "Skill Owner / Architecture Lead",
+    "changelog": [
+        {
+            "version": "1.1.0",
+            "date": "2026-09-02",
+            "summary": "Added enterprise operating model (§57–§67), deterministic tier routing (§59), automated verification rules (§62), test/regression suite categories (§63), failure recovery (§64), human review and approval rules (§65), monitoring and metrics (§66), enterprise release checklist (§67), and Phase 1 baseline establishment (§68).",
+            "compatibility_impact": "Additive. No existing architecture output fields were removed or renamed.",
+            "approver": "Skill Owner / Architecture Lead"
+        },
+        {
+            "version": "1.0.0",
+            "date": "2026-08-31",
+            "summary": "Initial enterprise skill specification. Core PRD-to-architecture design, traceability, validation, and downstream handoff.",
+            "compatibility_impact": "N/A — initial release.",
+            "approver": "Skill Owner / Architecture Lead"
+        }
+    ]
+}

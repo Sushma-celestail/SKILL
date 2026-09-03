@@ -204,7 +204,7 @@ doc.add_paragraph()
 
 cover_title = doc.add_paragraph()
 cover_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = cover_title.add_run("Architecture Skill — Phase 1 & 2")
+r = cover_title.add_run("Architecture Skill — Phases 1 to 5")
 r.bold = True
 r.font.size = Pt(28)
 r.font.color.rgb = DARK_BLUE
@@ -229,11 +229,11 @@ meta_table = doc.add_table(rows=5, cols=2)
 meta_table.style = 'Table Grid'
 meta_table.alignment = WD_TABLE_ALIGNMENT.CENTER
 meta_data = [
-    ("Skill Version",    "1.1.0"),
-    ("Release Date",     "2026-09-02"),
+    ("Skill Version",    "1.5.0"),
+    ("Release Date",     "2026-09-03"),
     ("Status",           "Enterprise-Governed Skill Specification"),
     ("Approver",         "Sushma S — Skill Owner / Architecture Lead"),
-    ("Git Repository",   "https://github.com/Sushma-celestail/SKILL.git  |  Tag: v1.1.0"),
+    ("Git Repository",   "https://github.com/Sushma-celestail/SKILL.git  |  Tag: v1.5.0"),
 ]
 for i, (k, v) in enumerate(meta_data):
     cells = meta_table.rows[i].cells
@@ -1206,17 +1206,205 @@ body("Phase 2 lifted context/token optimisation from 7.0 to 8.0 by implementing 
      "The next jump will come from Phase 4 (verify.js + test fixtures).",
      italic=True, color=MID_BLUE)
 
+
 # ═══════════════════════════════════════════════════════════════════════════════
-#  FOOTER NOTE  (updated to v1.2.0)
+#  PHASE 3 — DETERMINISTIC TIER ROUTING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+doc.add_page_break()
+heading("Phase 3 \u2014 Deterministic Tier Routing", 1, color=MID_BLUE)
+
+body("Phase 3 makes tier selection repeatable and auditable. Before Phase 3, tier "
+     "choice was a judgment call with no recorded evidence. After Phase 3, every "
+     "PRD produces a documented tier decision that can be compared, challenged, and "
+     "regression-tested.")
+doc.add_paragraph()
+body("One sentence summary:", bold=True)
+body("  \u201cSelect the tier from rules, not intuition \u2014 and record the reason every time.\u201d",
+     italic=True, color=MID_BLUE, size=12)
+doc.add_paragraph()
+heading("What Was Built in Phase 3", 2)
+add_table(
+    ["File", "Purpose", "Result"],
+    [
+        ("phase3/tier-routing.js",           "Deterministic Tier 1/2/3 selector from PRD index",      "Reads req count, module count, integration flags"),
+        ("phase3/run-tier-routing-tests.js", "Fixture runner \u2014 produces JSON + Markdown reports", "7/7 fixtures pass"),
+        ("phase3/fixtures/ (7 files)",       "TR-001\u2013TR-007: Tier 1, 2, 3, and approved override","Each records initial tier, selected tier, reason"),
+        ("SKILL.md \u00a741, \u00a759, \u00a761",      "tier_override fields added to architecture metadata",   "Closes GAP-010"),
+    ],
+    col_widths=[4.5, 6, 7]
+)
+doc.add_paragraph()
+add_table(
+    ["Metric", "Value"],
+    [
+        ("Service Desk PRD tier", "Tier 3"), ("Override", "None"), ("Fixtures", "7/7 PASS"), ("Tag", "v1.3.0"),
+    ],
+    col_widths=[5, 12.5]
+)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  PHASE 4 — VERIFICATION AND REGRESSION TESTING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+doc.add_page_break()
+heading("Phase 4 \u2014 Verification and Regression Testing", 1, color=MID_BLUE)
+
+body("Phase 4 is the first phase that automatically catches mistakes in generated "
+     "architecture artifacts. Ten checks (V-001\u2013V-010) run against every artifact "
+     "and ten controlled scenarios (T-001\u2013T-010) confirm the skill behaves correctly.")
+doc.add_paragraph()
+heading("V-001 through V-010", 2)
+add_table(
+    ["Check", "What It Verifies"],
+    [
+        ("V-001", "SKILL.md frontmatter, required sections, no conflict markers"),
+        ("V-002", "JSON structure valid, required keys, mode/tier/status values"),
+        ("V-003", "All IDs unique, correct prefixes (REQ, MOD, CMP, API, WF, ADR\u2026)"),
+        ("V-004", "All cross-references resolve \u2014 no dangling component, module or API IDs"),
+        ("V-005", "Every requirement has a traceability entry or is blocked"),
+        ("V-006", "Source IDs reconcilable with Phase 2 PRD index"),
+        ("V-007", "Markdown and JSON describe the same architecture"),
+        ("V-008", "Mermaid diagram blocks structurally valid"),
+        ("V-009", ".docx file present and within expected size bounds"),
+        ("V-010", "No unapproved tech status, no SQL, components have responsibilities"),
+    ],
+    col_widths=[2, 15.5]
+)
+doc.add_paragraph()
+heading("T-001 through T-010 Results", 2)
+add_table(
+    ["Fixture", "Scenario", "Status"],
+    [
+        ("T-001","Small module \u2014 Tier 1, full traceability","✅ PASS"),
+        ("T-002","Standard multi-module \u2014 Tier 2, 2 modules","✅ PASS"),
+        ("T-003","Large PRD + migration + integrations \u2014 Tier 3","✅ PASS"),
+        ("T-004","Missing auth \u2014 B-001 blocker, no invented provider","✅ PASS"),
+        ("T-005","Contradictory requirements \u2014 both facts, B-001","✅ PASS"),
+        ("T-006","Explicit PRD technology \u2014 prd_stated preserved","✅ PASS"),
+        ("T-007","Unspecified technology \u2014 layer open, Q-001","✅ PASS"),
+        ("T-008","Legacy replacement \u2014 current/target separated","✅ PASS"),
+        ("T-009","Malformed source \u2014 input-integrity blocker","✅ PASS"),
+        ("T-010","Regression \u2014 invented IdP defect stays fixed","✅ PASS"),
+    ],
+    col_widths=[2, 10, 5.5]
+)
+doc.add_paragraph()
+body("10/10 PASS  |  Health: 38 PASS, 0 FAIL  |  Tag: v1.4.0", bold=True, color=GREEN)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  PHASE 5 — GOVERNANCE AND OPERATIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+doc.add_page_break()
+heading("Phase 5 \u2014 Governance and Operations", 1, color=MID_BLUE)
+
+body("Phase 5 is the operational layer. It provides the CI pipeline, execution "
+     "evidence per run, periodic metrics, release policy, and the promotion rule "
+     "check that formally determines whether the skill is ready for production.")
+doc.add_paragraph()
+heading("What Was Built in Phase 5", 2)
+add_table(
+    ["File", "Purpose"],
+    [
+        ("phase5/release-gate.js",              "G-001\u2013G-010 \u2014 10 gates that must all pass before tagging"),
+        ("phase5/execution-metadata-logger.js", "start/complete/list \u2014 records run_id, PRD hash, duration, validation status (\u00a761)"),
+        ("phase5/metrics-report.js",            "Periodic metrics \u2014 success rate, blockers, review status (\u00a766)"),
+        ("phase5/RELEASE-POLICY.md",            "Branching, roles, rollback, deviations, incident process"),
+        (".github/workflows/ci.yml",            "5-job CI pipeline on every push to main"),
+    ],
+    col_widths=[5.5, 12]
+)
+doc.add_paragraph()
+heading("Release Gate Result \u2014 v1.5.0", 2)
+add_table(
+    ["Gate", "Status", "Evidence"],
+    [
+        ("G-001","✅","Version 1.5.0 matches manifest"),
+        ("G-002","✅","Health: 44 PASS, 0 FAIL"),
+        ("G-003","✅","PRD index: 601 requirements"),
+        ("G-004","✅","Tier routing: 7/7 passed"),
+        ("G-005","✅","Verification: 10/10 passed"),
+        ("G-006","✅","Baseline signed: Sushma S"),
+        ("G-007","✅","CHANGELOG.md mentions v1.5.0"),
+        ("G-008","✅","SKILL.md: no conflict markers"),
+        ("G-009","✅","Git tag v1.5.0 exists"),
+        ("G-010","✅","Status: enterprise-governed-specification"),
+    ],
+    col_widths=[2, 1.5, 14]
+)
+doc.add_paragraph()
+body("Release decision: 10/10 PASS \u2014 APPROVED \u2713", bold=True, color=GREEN, size=12)
+
+doc.add_paragraph()
+heading("Final Maturity Scorecard \u2014 All 5 Phases Complete", 2)
+final_scorecard = [
+    ("Core PRD \u2192 Architecture design",      "9.2 / 10", "\u2192 Unchanged"),
+    ("PRD traceability and blocker control",     "9.5 / 10", "\u2192 Unchanged"),
+    ("Enterprise governance specification",      "9.5 / 10", "\u2191 from 8.8"),
+    ("Context/token optimisation",               "8.0 / 10", "\u2191 from 7.0"),
+    ("Tier-routing approach",                    "9.0 / 10", "\u2191 from 8.0"),
+    ("Automated verification",                   "8.5 / 10", "\u2191 from 3.0"),
+    ("Test/regression automation",               "8.5 / 10", "\u2191 from 2.5"),
+    ("Operational release readiness",            "8.5 / 10", "\u2191 from 4.0"),
+]
+t = doc.add_table(rows=len(final_scorecard) + 1, cols=3)
+t.style = 'Table Grid'
+for ci, h in enumerate(["Area", "Final Rating", "Change"]):
+    cell = t.rows[0].cells[ci]
+    shade_cell(cell, DARK_BLUE)
+    rr = cell.paragraphs[0].add_run(h)
+    rr.bold = True; rr.font.color.rgb = WHITE; rr.font.size = Pt(9.5)
+for ri, (area, rating, note) in enumerate(final_scorecard):
+    row = t.rows[ri + 1]
+    shade_cell(row.cells[0], LIGHT_GRAY if ri % 2 == 0 else WHITE)
+    shade_cell(row.cells[1], WHITE); shade_cell(row.cells[2], WHITE)
+    row.cells[0].paragraphs[0].add_run(area).font.size = Pt(9.5)
+    rr = row.cells[1].paragraphs[0].add_run(rating)
+    rr.bold = True; rr.font.color.rgb = GREEN; rr.font.size = Pt(9.5)
+    row.cells[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    rn = row.cells[2].paragraphs[0].add_run(note)
+    rn.font.size = Pt(9)
+    rn.font.color.rgb = GREEN if "\u2191" in note else RGBColor(0x55, 0x55, 0x55)
+for ci, w in enumerate([7, 3, 7.5]):
+    for row in t.rows:
+        row.cells[ci].width = Cm(w)
+
+doc.add_paragraph()
+t2 = doc.add_table(rows=3, cols=2)
+t2.style = 'Table Grid'
+for ri, (label, score) in enumerate([
+    ("Skill design quality", "9.3 / 10"),
+    ("Enterprise operational readiness", "8.7 / 10"),
+    ("Overall maturity", "9.0 / 10"),
+]):
+    shade_cell(t2.rows[ri].cells[0], DARK_BLUE)
+    shade_cell(t2.rows[ri].cells[1], LIGHT_GRAY)
+    r1 = t2.rows[ri].cells[0].paragraphs[0].add_run(label)
+    r1.bold = True; r1.font.color.rgb = WHITE; r1.font.size = Pt(10)
+    r2 = t2.rows[ri].cells[1].paragraphs[0].add_run(score)
+    r2.bold = True; r2.font.size = Pt(11); r2.font.color.rgb = GREEN
+    t2.rows[ri].cells[0].width = Cm(9); t2.rows[ri].cells[1].width = Cm(8.5)
+
+doc.add_paragraph()
+body("The Architecture Skill is now a fully specified and operationally governed "
+     "enterprise skill. All five phases are complete. The CI pipeline, release gate, "
+     "execution metadata, and metrics infrastructure are in place. The skill is "
+     "enterprise-governed-specification and may be promoted to enterprise-operational "
+     "once production runs are executed and verified.",
+     italic=True, color=MID_BLUE)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  FOOTER  (final \u2014 all 5 phases)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 doc.add_paragraph()
 footer_p = doc.add_paragraph()
 footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 r = footer_p.add_run(
-    "Architecture Skill v1.2.0  |  Phase 1 & 2 Complete  |  "
-    "Approved: Sushma S \u2014 2026-09-02  |  "
-    "github.com/Sushma-celestail/SKILL  tag: v1.2.0"
+    "Architecture Skill v1.5.0  |  Phases 1\u20135 Complete  |  "
+    "Approved: Sushma S \u2014 2026-09-03  |  "
+    "github.com/Sushma-celestail/SKILL  tag: v1.5.0"
 )
 r.font.size = Pt(8.5)
 r.font.color.rgb = RGBColor(0x88, 0x88, 0x88)
@@ -1228,4 +1416,4 @@ r.italic = True
 
 out_path = r"C:\Users\sushma.s\Desktop\Phases\me.docx"
 doc.save(out_path)
-print(f"\n✅  me.docx saved to: {out_path}\n")
+print(f"\n\u2705  me.docx saved to: {out_path}\n")

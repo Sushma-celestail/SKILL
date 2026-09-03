@@ -1,0 +1,68 @@
+{
+    "fixture_id": "T-009",
+    "scenario": "Malformed / incomplete source — safe stop and input-integrity failure",
+    "description": "Architecture artifact produced when the PRD input was unreadable or critically incomplete. Expected: input-integrity blocker recorded, no invented requirements, validation flags false.",
+    "expected_checks": {
+        "has_input_integrity_blocker": true,
+        "no_invented_requirements": true,
+        "validation_failed": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "UNKNOWN — source unreadable",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-009 test fixture — malformed input"
+        },
+        "mode": "application",
+        "depth_tier": 1,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "Input document could not be fully parsed — content was truncated or unreadable.",
+                "type": "constraint",
+                "status": "blocked",
+                "source": "",
+                "current_or_target": "target_state"
+            }
+        ],
+        "modules": [],
+        "components": [],
+        "apis": [],
+        "workflows": [],
+        "blockers": [
+            {
+                "id": "B-001",
+                "text": "Input document is malformed, truncated, or unreadable. Architecture generation stopped.",
+                "impact": "No requirements could be reliably extracted. Architecture cannot be produced without a readable, complete PRD. Action: Provide a readable copy of the intended source document."
+            }
+        ],
+        "open_questions": [
+            {
+                "id": "Q-001",
+                "question": "Is the correct, complete PRD available? Please provide a readable version to proceed.",
+                "impact": "Architecture cannot proceed without a valid source."
+            }
+        ],
+        "requirement_traceability": [],
+        "architecture_decisions": [],
+        "validation": {
+            "requirements_covered": false,
+            "technology_constraints_respected": false,
+            "database_scope_respected": false,
+            "security_reviewed": false,
+            "traceability_complete": false,
+            "invariants_validated": false,
+            "consistency_check_passed": false
+        },
+        "assumptions": [
+            "Architecture generation was stopped early due to input integrity failure — no assumptions were made about content."
+        ],
+        "technology_stack": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": []
+    }
+}

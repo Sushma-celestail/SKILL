@@ -1,0 +1,328 @@
+{
+  "report_type": "verification_test",
+  "skill_version": "1.3.0",
+  "generated_at": "2026-09-02T13:29:43.185Z",
+  "overall": "PASS",
+  "summary": {
+    "total": 8,
+    "pass": 8,
+    "fail": 0,
+    "error": 0
+  },
+  "results": [
+    {
+      "fixture_id": "T-001",
+      "file": "T-001-small-module.json",
+      "scenario": "Complete small module PRD",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "10 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-004",
+      "file": "T-004-missing-auth.json",
+      "scenario": "Missing critical authentication / boundary",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "7 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-005",
+      "file": "T-005-contradictory-requirements.json",
+      "scenario": "Contradictory requirements",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "6 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-006",
+      "file": "T-006-explicit-technology.json",
+      "scenario": "Explicit technology stated in PRD",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "5 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-007",
+      "file": "T-007-unspecified-technology.json",
+      "scenario": "Technology unspecified by PRD",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "5 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-008",
+      "file": "T-008-legacy-replacement.json",
+      "scenario": "Legacy replacement — current and target state separated",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "14 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "WARN",
+          "message": "1 untraced requirements",
+          "detail": [
+            "REQ-002 (prd_stated) has no traceability"
+          ]
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-009",
+      "file": "T-009-malformed-input.json",
+      "scenario": "Malformed / incomplete source — safe stop and input-integrity failure",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "3 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    },
+    {
+      "fixture_id": "T-010",
+      "file": "T-010-regression.json",
+      "scenario": "Prior defect regression — invented identity provider must stay fixed",
+      "status": "PASS",
+      "verify_overall": "PASS",
+      "checks": [
+        {
+          "check": "V-002",
+          "status": "PASS",
+          "message": "JSON structure valid"
+        },
+        {
+          "check": "V-003",
+          "status": "PASS",
+          "message": "8 unique IDs valid",
+          "detail": []
+        },
+        {
+          "check": "V-004",
+          "status": "PASS",
+          "message": "All cross-references resolve",
+          "detail": []
+        },
+        {
+          "check": "V-005",
+          "status": "PASS",
+          "message": "All requirements traced or blocked",
+          "detail": []
+        },
+        {
+          "check": "V-010",
+          "status": "PASS",
+          "message": "Policy checks pass",
+          "detail": []
+        }
+      ],
+      "expected_failures": []
+    }
+  ]
+}

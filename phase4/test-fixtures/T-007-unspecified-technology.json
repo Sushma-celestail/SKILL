@@ -1,0 +1,133 @@
+{
+    "fixture_id": "T-007",
+    "scenario": "Technology unspecified by PRD",
+    "expected_checks": {
+        "technology_status": "open",
+        "no_invented_technology": true,
+        "open_question_created": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-007-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-007 test fixture — unspecified technology"
+        },
+        "mode": "module",
+        "depth_tier": 1,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "The application must persist user data.",
+                "type": "data",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            }
+        ],
+        "technology_stack": [
+            {
+                "layer": "Database",
+                "technology": "Open — not specified by PRD",
+                "status": "open"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Data Persistence Module",
+                "purpose": "Stores user data using an unspecified database technology.",
+                "responsibilities": [
+                    "Persist user data",
+                    "Support CRUD operations"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-001"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Data Store",
+                "purpose": "Technology-agnostic data persistence layer.",
+                "responsibilities": [
+                    "Provide data access abstraction",
+                    "Store and retrieve user records"
+                ],
+                "inputs": [
+                    "Data access requests"
+                ],
+                "outputs": [
+                    "Stored data",
+                    "Retrieved records"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "User data records"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "apis": [],
+        "workflows": [],
+        "open_questions": [
+            {
+                "id": "Q-001",
+                "question": "Which database technology should be used for data persistence? The PRD does not specify a database.",
+                "impact": "Technology selection affects deployment dependencies, query design, and operational requirements."
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Database technology left as Open Question",
+                "context": "PRD does not specify a database",
+                "reason": "§9 prohibits silently selecting a technology not stated in the PRD",
+                "alternative": "Select PostgreSQL, MongoDB, or similar",
+                "why_not_alternative": "No PRD authority for any specific selection",
+                "trade_offs": "Architecture cannot be fully specified until Q-001 is resolved",
+                "impact": "Data store component design is technology-agnostic until decision is made",
+                "status": "proposed",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "blockers": [],
+        "assumptions": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": [],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        }
+    }
+}

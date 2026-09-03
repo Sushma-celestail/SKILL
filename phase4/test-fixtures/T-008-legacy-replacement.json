@@ -1,0 +1,322 @@
+{
+    "fixture_id": "T-008",
+    "scenario": "Legacy replacement — current and target state separated",
+    "expected_checks": {
+        "current_state_separated": true,
+        "target_state_defined": true,
+        "no_legacy_copied_to_target": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-008-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-008 test fixture — legacy replacement"
+        },
+        "mode": "application",
+        "depth_tier": 2,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "The legacy CSV-based reporting system must be replaced with a database-backed reporting module.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "Current system: reports are generated from static CSV exports updated manually each week.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-002",
+                "current_or_target": "current_state"
+            },
+            {
+                "id": "REQ-003",
+                "text": "Target system: reports must be generated on demand from live database data.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-003",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-004",
+                "text": "Historical CSV data must be migrated into the new database before go-live.",
+                "type": "data",
+                "status": "prd_stated",
+                "source": "FR-004",
+                "current_or_target": "target_state"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Reporting Module",
+                "purpose": "Replaces legacy CSV-based reporting with live database-backed reports.",
+                "responsibilities": [
+                    "Generate on-demand reports",
+                    "Store report data in database",
+                    "Provide report API"
+                ],
+                "actors": [
+                    "ACT-001"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-003"
+                ]
+            },
+            {
+                "id": "MOD-002",
+                "name": "Data Migration Module",
+                "purpose": "One-time migration of historical CSV data into the new database.",
+                "responsibilities": [
+                    "Extract CSV data",
+                    "Transform to target schema",
+                    "Load into database",
+                    "Validate migrated records"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-003"
+                ],
+                "dependencies": [
+                    "MOD-001"
+                ],
+                "related_requirements": [
+                    "REQ-004"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Report Generator",
+                "purpose": "Generates on-demand reports from live database data.",
+                "responsibilities": [
+                    "Query database for report data",
+                    "Format report output"
+                ],
+                "inputs": [
+                    "Report request"
+                ],
+                "outputs": [
+                    "Formatted report"
+                ],
+                "dependencies": [
+                    "CMP-002"
+                ],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-003"
+                ]
+            },
+            {
+                "id": "CMP-002",
+                "module_id": "MOD-001",
+                "name": "Report Data Store",
+                "purpose": "Stores live reporting data.",
+                "responsibilities": [
+                    "Persist report-source data",
+                    "Serve queries from CMP-001"
+                ],
+                "inputs": [
+                    "Data write requests"
+                ],
+                "outputs": [
+                    "Query results"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Report data records"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            },
+            {
+                "id": "CMP-003",
+                "module_id": "MOD-002",
+                "name": "CSV Migration Runner",
+                "purpose": "Executes the one-time import of historical CSV data.",
+                "responsibilities": [
+                    "Parse legacy CSV files",
+                    "Map to target schema",
+                    "Insert into CMP-002 data store",
+                    "Produce reconciliation report"
+                ],
+                "inputs": [
+                    "Legacy CSV files"
+                ],
+                "outputs": [
+                    "Migrated records",
+                    "Reconciliation report"
+                ],
+                "dependencies": [
+                    "CMP-002"
+                ],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-004"
+                ]
+            }
+        ],
+        "apis": [
+            {
+                "id": "API-001",
+                "name": "Report API",
+                "purpose": "Exposes on-demand report generation to consumers.",
+                "consumer": "Frontend / downstream systems",
+                "provider": "CMP-001",
+                "operations": [
+                    "GET /reports",
+                    "GET /reports/{id}"
+                ],
+                "auth": "",
+                "authz": "",
+                "related_components": [
+                    "CMP-001"
+                ],
+                "related_requirements": [
+                    "REQ-003"
+                ]
+            }
+        ],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "Generate On-Demand Report",
+                "trigger": "User requests report via API-001",
+                "actor": "ACT-001",
+                "preconditions": [
+                    "Database contains current data"
+                ],
+                "steps": [
+                    "User calls API-001",
+                    "CMP-001 queries CMP-002",
+                    "CMP-001 formats report",
+                    "Response returned"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "apis": [
+                    "API-001"
+                ],
+                "data_changes": [],
+                "failure_scenarios": [
+                    "Database unavailable — return 503"
+                ],
+                "final_state": "Report returned to user"
+            },
+            {
+                "id": "WF-002",
+                "name": "One-Time CSV Migration",
+                "trigger": "Migration run initiated by operations team before go-live",
+                "actor": "",
+                "preconditions": [
+                    "Legacy CSV files available",
+                    "Target database schema deployed"
+                ],
+                "steps": [
+                    "CMP-003 reads CSV files",
+                    "CMP-003 maps to target schema",
+                    "CMP-003 inserts into CMP-002",
+                    "CMP-003 produces reconciliation report"
+                ],
+                "components": [
+                    "CMP-003",
+                    "CMP-002"
+                ],
+                "apis": [],
+                "data_changes": [
+                    "Historical records inserted into Report Data Store"
+                ],
+                "failure_scenarios": [
+                    "Duplicate records detected — skip and log",
+                    "Schema mismatch — stop and report"
+                ],
+                "final_state": "Historical data available in Report Data Store"
+            }
+        ],
+        "actors": [
+            {
+                "id": "ACT-001",
+                "name": "Report Consumer",
+                "description": "Any user or system requesting a report."
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Legacy CSV mechanism not carried into target architecture",
+                "context": "Current system uses weekly manual CSV exports",
+                "reason": "§8 prohibits copying legacy limitations into target architecture. Target requirement (REQ-003) explicitly requires live database-backed reports.",
+                "alternative": "Retain CSV export as a fallback",
+                "why_not_alternative": "No PRD requirement for CSV retention in the target state",
+                "trade_offs": "CSV fallback not available post-migration",
+                "impact": "Migration required before go-live (MOD-002)",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002",
+                    "REQ-003"
+                ]
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-002",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-003",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-004",
+                "module_id": "MOD-002",
+                "component_id": "CMP-003",
+                "workflow_id": "WF-002",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "blockers": [],
+        "open_questions": [],
+        "assumptions": [],
+        "technology_stack": [],
+        "architecture_invariants": [],
+        "state_machines": [],
+        "entities": [],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        }
+    }
+}

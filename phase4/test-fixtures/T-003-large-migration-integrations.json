@@ -1,0 +1,926 @@
+{
+    "fixture_id": "T-003",
+    "scenario": "Large PRD with migration and integrations — Tier 3 output",
+    "expected_tier": 3,
+    "expected_checks": {
+        "tier": 3,
+        "mode": "application",
+        "all_requirements_traced": true,
+        "blockers": 0
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-003-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-003 test fixture — large PRD, migration, integrations, multi-actor"
+        },
+        "mode": "application",
+        "depth_tier": 3,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "The system must support incident creation by end users and IT technicians.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "The system must support service request creation and approval workflows.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-002",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-003",
+                "text": "The system must track hardware and software assets with lifecycle status.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-003",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-004",
+                "text": "The system must support change management with CAB approval workflow.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-004",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-005",
+                "text": "The system must synchronise users from the corporate directory (Azure AD).",
+                "type": "integration",
+                "status": "prd_stated",
+                "source": "INT-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-006",
+                "text": "The system must send email and in-app notifications on ticket status changes.",
+                "type": "integration",
+                "status": "prd_stated",
+                "source": "INT-002",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-007",
+                "text": "Historical ticket data from the legacy ITSM system must be migrated before go-live.",
+                "type": "data",
+                "status": "prd_stated",
+                "source": "MIG-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-008",
+                "text": "Role-based access control must be enforced across all modules.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "NFR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-009",
+                "text": "The API must respond within 1 second for standard list operations under 200 concurrent users.",
+                "type": "performance",
+                "status": "prd_stated",
+                "source": "NFR-002",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-010",
+                "text": "Authentication must use Azure AD via SAML 2.0 or OIDC.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "NFR-003",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-011",
+                "text": "The system must generate SLA compliance and asset utilisation reports.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-011",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-012",
+                "text": "All data access must be scoped to the user's role and assigned teams.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "NFR-004",
+                "current_or_target": "target_state"
+            }
+        ],
+        "actors": [
+            {
+                "id": "ACT-001",
+                "name": "End User",
+                "description": "Employee raising incidents or service requests."
+            },
+            {
+                "id": "ACT-002",
+                "name": "IT Technician",
+                "description": "Resolves incidents and service requests."
+            },
+            {
+                "id": "ACT-003",
+                "name": "IT Administrator",
+                "description": "Manages system configuration, users, and CAB approvals."
+            },
+            {
+                "id": "ACT-004",
+                "name": "Change Manager",
+                "description": "Owns change requests and CAB coordination."
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Incident Management",
+                "purpose": "Creates and resolves incidents.",
+                "responsibilities": [
+                    "Incident CRUD",
+                    "Assignment",
+                    "SLA tracking",
+                    "Status lifecycle"
+                ],
+                "actors": [
+                    "ACT-001",
+                    "ACT-002"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "dependencies": [
+                    "MOD-006"
+                ],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-008",
+                    "REQ-009"
+                ]
+            },
+            {
+                "id": "MOD-002",
+                "name": "Service Request",
+                "purpose": "Manages service request creation and approval.",
+                "responsibilities": [
+                    "Request CRUD",
+                    "Approval workflow"
+                ],
+                "actors": [
+                    "ACT-001",
+                    "ACT-002",
+                    "ACT-003"
+                ],
+                "components": [
+                    "CMP-003"
+                ],
+                "dependencies": [
+                    "MOD-006"
+                ],
+                "related_requirements": [
+                    "REQ-002",
+                    "REQ-008"
+                ]
+            },
+            {
+                "id": "MOD-003",
+                "name": "Asset Management",
+                "purpose": "Tracks hardware and software assets.",
+                "responsibilities": [
+                    "Asset CRUD",
+                    "Lifecycle state management",
+                    "Assignment to users"
+                ],
+                "actors": [
+                    "ACT-002",
+                    "ACT-003"
+                ],
+                "components": [
+                    "CMP-004"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-003",
+                    "REQ-008"
+                ]
+            },
+            {
+                "id": "MOD-004",
+                "name": "Change Management",
+                "purpose": "Manages change requests and CAB approvals.",
+                "responsibilities": [
+                    "Change CRUD",
+                    "CAB workflow",
+                    "Approval tracking"
+                ],
+                "actors": [
+                    "ACT-003",
+                    "ACT-004"
+                ],
+                "components": [
+                    "CMP-005"
+                ],
+                "dependencies": [
+                    "MOD-006"
+                ],
+                "related_requirements": [
+                    "REQ-004",
+                    "REQ-008"
+                ]
+            },
+            {
+                "id": "MOD-005",
+                "name": "Reporting",
+                "purpose": "Generates SLA and asset reports.",
+                "responsibilities": [
+                    "SLA compliance reports",
+                    "Asset utilisation reports"
+                ],
+                "actors": [
+                    "ACT-003"
+                ],
+                "components": [
+                    "CMP-006"
+                ],
+                "dependencies": [
+                    "MOD-001",
+                    "MOD-003"
+                ],
+                "related_requirements": [
+                    "REQ-011"
+                ]
+            },
+            {
+                "id": "MOD-006",
+                "name": "User and Access",
+                "purpose": "Manages user identity, roles, and access control.",
+                "responsibilities": [
+                    "User sync from Azure AD",
+                    "RBAC enforcement",
+                    "Session management"
+                ],
+                "actors": [
+                    "ACT-003"
+                ],
+                "components": [
+                    "CMP-007",
+                    "CMP-008"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-005",
+                    "REQ-008",
+                    "REQ-010",
+                    "REQ-012"
+                ]
+            },
+            {
+                "id": "MOD-007",
+                "name": "Notification",
+                "purpose": "Dispatches email and in-app notifications.",
+                "responsibilities": [
+                    "Status-change notification",
+                    "Assignment notification"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-009"
+                ],
+                "dependencies": [
+                    "MOD-001",
+                    "MOD-002",
+                    "MOD-004"
+                ],
+                "related_requirements": [
+                    "REQ-006"
+                ]
+            },
+            {
+                "id": "MOD-008",
+                "name": "Data Migration",
+                "purpose": "One-time migration of legacy ITSM data.",
+                "responsibilities": [
+                    "Extract from legacy system",
+                    "Transform to target schema",
+                    "Load and reconcile"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-010"
+                ],
+                "dependencies": [
+                    "MOD-001",
+                    "MOD-002",
+                    "MOD-003"
+                ],
+                "related_requirements": [
+                    "REQ-007"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Incident Service",
+                "purpose": "Core incident CRUD and SLA tracking.",
+                "responsibilities": [
+                    "Create/update/close incidents",
+                    "Track SLA timers"
+                ],
+                "inputs": [
+                    "Incident request"
+                ],
+                "outputs": [
+                    "Incident record"
+                ],
+                "dependencies": [
+                    "CMP-008"
+                ],
+                "owned_data": [
+                    "Incident records"
+                ],
+                "security_boundary": "Requires authenticated session and RBAC check.",
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-009"
+                ]
+            },
+            {
+                "id": "CMP-002",
+                "module_id": "MOD-001",
+                "name": "Assignment Engine",
+                "purpose": "Routes incidents to teams or technicians.",
+                "responsibilities": [
+                    "Auto-route by category",
+                    "Support manual assignment"
+                ],
+                "inputs": [
+                    "New incident"
+                ],
+                "outputs": [
+                    "Assigned incident"
+                ],
+                "dependencies": [
+                    "CMP-001"
+                ],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            },
+            {
+                "id": "CMP-003",
+                "module_id": "MOD-002",
+                "name": "Request Service",
+                "purpose": "Manages service request lifecycle.",
+                "responsibilities": [
+                    "Request CRUD",
+                    "Drive approval workflow"
+                ],
+                "inputs": [
+                    "Request submission"
+                ],
+                "outputs": [
+                    "Request record"
+                ],
+                "dependencies": [
+                    "CMP-008"
+                ],
+                "owned_data": [
+                    "Request records"
+                ],
+                "security_boundary": "Requires RBAC.",
+                "related_requirements": [
+                    "REQ-002"
+                ]
+            },
+            {
+                "id": "CMP-004",
+                "module_id": "MOD-003",
+                "name": "Asset Service",
+                "purpose": "Tracks asset inventory and lifecycle.",
+                "responsibilities": [
+                    "Asset CRUD",
+                    "Manage lifecycle states",
+                    "Assign assets to users"
+                ],
+                "inputs": [
+                    "Asset data"
+                ],
+                "outputs": [
+                    "Asset record"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Asset records"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-003"
+                ]
+            },
+            {
+                "id": "CMP-005",
+                "module_id": "MOD-004",
+                "name": "Change Service",
+                "purpose": "Manages change request and CAB workflow.",
+                "responsibilities": [
+                    "Change CRUD",
+                    "CAB approval state machine"
+                ],
+                "inputs": [
+                    "Change request"
+                ],
+                "outputs": [
+                    "Change record"
+                ],
+                "dependencies": [
+                    "CMP-008"
+                ],
+                "owned_data": [
+                    "Change records"
+                ],
+                "security_boundary": "Requires RBAC.",
+                "related_requirements": [
+                    "REQ-004"
+                ]
+            },
+            {
+                "id": "CMP-006",
+                "module_id": "MOD-005",
+                "name": "Report Engine",
+                "purpose": "Generates SLA and asset reports.",
+                "responsibilities": [
+                    "Query incident and asset data",
+                    "Format reports"
+                ],
+                "inputs": [
+                    "Report request"
+                ],
+                "outputs": [
+                    "Report output"
+                ],
+                "dependencies": [
+                    "CMP-001",
+                    "CMP-004"
+                ],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-011"
+                ]
+            },
+            {
+                "id": "CMP-007",
+                "module_id": "MOD-006",
+                "name": "Directory Sync Service",
+                "purpose": "Syncs users from Azure AD.",
+                "responsibilities": [
+                    "Pull user data from Azure AD",
+                    "Create/update local user records"
+                ],
+                "inputs": [
+                    "Azure AD directory"
+                ],
+                "outputs": [
+                    "Synced user records"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-005"
+                ]
+            },
+            {
+                "id": "CMP-008",
+                "module_id": "MOD-006",
+                "name": "RBAC Enforcement Service",
+                "purpose": "Enforces role-based access control.",
+                "responsibilities": [
+                    "Validate role against operation",
+                    "Scope data access to teams"
+                ],
+                "inputs": [
+                    "Access request"
+                ],
+                "outputs": [
+                    "Allow/deny decision"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Role assignments"
+                ],
+                "security_boundary": "Central enforcement point for all modules.",
+                "related_requirements": [
+                    "REQ-008",
+                    "REQ-012"
+                ]
+            },
+            {
+                "id": "CMP-009",
+                "module_id": "MOD-007",
+                "name": "Notification Dispatcher",
+                "purpose": "Sends email and in-app notifications.",
+                "responsibilities": [
+                    "Dispatch on status change",
+                    "Dispatch on assignment"
+                ],
+                "inputs": [
+                    "Notification event"
+                ],
+                "outputs": [
+                    "Sent notification"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-006"
+                ]
+            },
+            {
+                "id": "CMP-010",
+                "module_id": "MOD-008",
+                "name": "Migration Runner",
+                "purpose": "One-time legacy data migration.",
+                "responsibilities": [
+                    "Extract from legacy",
+                    "Transform",
+                    "Load",
+                    "Reconcile"
+                ],
+                "inputs": [
+                    "Legacy data export"
+                ],
+                "outputs": [
+                    "Migrated records"
+                ],
+                "dependencies": [
+                    "CMP-001",
+                    "CMP-003",
+                    "CMP-004"
+                ],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-007"
+                ]
+            }
+        ],
+        "apis": [
+            {
+                "id": "API-001",
+                "name": "Incident API",
+                "purpose": "Incident management endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-001",
+                "operations": [
+                    "GET /incidents",
+                    "POST /incidents",
+                    "PUT /incidents/{id}"
+                ],
+                "auth": "Azure AD JWT",
+                "authz": "RBAC via CMP-008",
+                "related_components": [
+                    "CMP-001"
+                ],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-008",
+                    "REQ-009"
+                ]
+            },
+            {
+                "id": "API-002",
+                "name": "Request API",
+                "purpose": "Service request endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-003",
+                "operations": [
+                    "GET /requests",
+                    "POST /requests",
+                    "PUT /requests/{id}/approve"
+                ],
+                "auth": "Azure AD JWT",
+                "authz": "RBAC via CMP-008",
+                "related_components": [
+                    "CMP-003"
+                ],
+                "related_requirements": [
+                    "REQ-002"
+                ]
+            },
+            {
+                "id": "API-003",
+                "name": "Asset API",
+                "purpose": "Asset management endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-004",
+                "operations": [
+                    "GET /assets",
+                    "POST /assets",
+                    "PUT /assets/{id}"
+                ],
+                "auth": "Azure AD JWT",
+                "authz": "RBAC via CMP-008",
+                "related_components": [
+                    "CMP-004"
+                ],
+                "related_requirements": [
+                    "REQ-003"
+                ]
+            },
+            {
+                "id": "API-004",
+                "name": "Change API",
+                "purpose": "Change management endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-005",
+                "operations": [
+                    "GET /changes",
+                    "POST /changes",
+                    "PUT /changes/{id}/approve"
+                ],
+                "auth": "Azure AD JWT",
+                "authz": "RBAC via CMP-008",
+                "related_components": [
+                    "CMP-005"
+                ],
+                "related_requirements": [
+                    "REQ-004"
+                ]
+            },
+            {
+                "id": "API-005",
+                "name": "Reporting API",
+                "purpose": "Report generation endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-006",
+                "operations": [
+                    "GET /reports/sla",
+                    "GET /reports/assets"
+                ],
+                "auth": "Azure AD JWT",
+                "authz": "RBAC via CMP-008",
+                "related_components": [
+                    "CMP-006"
+                ],
+                "related_requirements": [
+                    "REQ-011"
+                ]
+            }
+        ],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "Incident Creation and Assignment",
+                "trigger": "User submits incident via API-001",
+                "actor": "ACT-001",
+                "preconditions": [
+                    "User authenticated"
+                ],
+                "steps": [
+                    "User posts incident",
+                    "CMP-001 creates record",
+                    "CMP-002 routes to team",
+                    "CMP-009 notifies assignee"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002",
+                    "CMP-009"
+                ],
+                "apis": [
+                    "API-001"
+                ],
+                "data_changes": [
+                    "Incident record created"
+                ],
+                "failure_scenarios": [
+                    "No team found for category — escalate to admin"
+                ],
+                "final_state": "Incident assigned; technician notified"
+            },
+            {
+                "id": "WF-002",
+                "name": "Change Request CAB Approval",
+                "trigger": "Change manager submits change for CAB review",
+                "actor": "ACT-004",
+                "preconditions": [
+                    "Change request created"
+                ],
+                "steps": [
+                    "Change submitted for review",
+                    "CAB members notified",
+                    "CAB votes",
+                    "CMP-005 records outcome",
+                    "Notification dispatched"
+                ],
+                "components": [
+                    "CMP-005",
+                    "CMP-009"
+                ],
+                "apis": [
+                    "API-004"
+                ],
+                "data_changes": [
+                    "Change status updated"
+                ],
+                "failure_scenarios": [
+                    "Quorum not reached — extend review window"
+                ],
+                "final_state": "Change approved or rejected"
+            }
+        ],
+        "integrations": [
+            {
+                "id": "INT-001",
+                "name": "Azure AD Directory Sync",
+                "purpose": "Keeps application users in sync with corporate directory.",
+                "direction": "inbound",
+                "consumer": "CMP-007",
+                "provider": "Azure AD",
+                "protocol": "OIDC / Graph API",
+                "authentication": "Service principal",
+                "data_exchanged": "User name, email, department, manager",
+                "trigger": "Scheduled — configurable interval",
+                "failure_handling": "Log failure, alert admin, continue with existing user records"
+            },
+            {
+                "id": "INT-002",
+                "name": "Email Notification",
+                "purpose": "Sends transactional notifications.",
+                "direction": "outbound",
+                "consumer": "CMP-009",
+                "provider": "SMTP relay / email service",
+                "protocol": "SMTP",
+                "authentication": "Service credentials",
+                "data_exchanged": "Notification content and recipient",
+                "trigger": "Event-driven — status change or assignment",
+                "failure_handling": "Retry up to 3 times; log failure; do not block originating operation"
+            }
+        ],
+        "technology_stack": [
+            {
+                "layer": "Identity Provider",
+                "technology": "Azure AD (SAML 2.0 / OIDC)",
+                "status": "prd_stated"
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-002",
+                "module_id": "MOD-002",
+                "component_id": "CMP-003",
+                "workflow_id": "",
+                "api_id": "API-002",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-003",
+                "module_id": "MOD-003",
+                "component_id": "CMP-004",
+                "workflow_id": "",
+                "api_id": "API-003",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-004",
+                "module_id": "MOD-004",
+                "component_id": "CMP-005",
+                "workflow_id": "WF-002",
+                "api_id": "API-004",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-005",
+                "module_id": "MOD-006",
+                "component_id": "CMP-007",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": "INT-001"
+            },
+            {
+                "requirement_id": "REQ-006",
+                "module_id": "MOD-007",
+                "component_id": "CMP-009",
+                "workflow_id": "WF-001",
+                "api_id": "",
+                "architecture_reference": "INT-002"
+            },
+            {
+                "requirement_id": "REQ-007",
+                "module_id": "MOD-008",
+                "component_id": "CMP-010",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-008",
+                "module_id": "MOD-006",
+                "component_id": "CMP-008",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-009",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-010",
+                "module_id": "MOD-006",
+                "component_id": "CMP-007",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-011",
+                "module_id": "MOD-005",
+                "component_id": "CMP-006",
+                "workflow_id": "",
+                "api_id": "API-005",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-012",
+                "module_id": "MOD-006",
+                "component_id": "CMP-008",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Centralised RBAC via CMP-008",
+                "context": "8 modules all require access control",
+                "reason": "Single enforcement point reduces risk of inconsistent access decisions across modules",
+                "alternative": "Per-module access checks",
+                "why_not_alternative": "Inconsistent enforcement and duplicated logic",
+                "trade_offs": "CMP-008 becomes a dependency for all modules",
+                "impact": "All API handlers call CMP-008 before processing",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-008",
+                    "REQ-012"
+                ]
+            },
+            {
+                "id": "ADR-002",
+                "decision": "Migration is a separate one-time module (MOD-008)",
+                "context": "Legacy ITSM data must be migrated before go-live",
+                "reason": "Migration is separate from ongoing integration; isolating it prevents production code from carrying migration logic",
+                "alternative": "Inline migration during application startup",
+                "why_not_alternative": "Risk of production corruption; violates §25 migration separation principle",
+                "trade_offs": "Requires a dedicated migration run before go-live",
+                "impact": "MOD-008 is decommissioned after successful migration",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-007"
+                ]
+            }
+        ],
+        "state_machines": [],
+        "entities": [],
+        "blockers": [],
+        "open_questions": [],
+        "assumptions": [],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        },
+        "architecture_invariants": []
+    }
+}

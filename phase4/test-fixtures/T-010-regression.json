@@ -1,0 +1,169 @@
+{
+    "fixture_id": "T-010",
+    "scenario": "Prior defect regression — invented identity provider must stay fixed",
+    "description": "Previously, the skill invented 'Azure AD' as the identity provider when the PRD did not specify one. This fixture confirms the defect remains fixed: identity provider must be an Open Question, not an invented value.",
+    "defect_reference": "Prior defect: skill invented 'Azure AD' as identity provider when PRD was silent on authentication provider.",
+    "expected_checks": {
+        "no_invented_identity_provider": true,
+        "open_question_for_auth": true,
+        "blocker_raised": "B-001"
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-010-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-010 regression fixture — invented identity provider defect"
+        },
+        "mode": "application",
+        "depth_tier": 2,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "Users must authenticate before accessing the system.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "Authentication provider is not specified in the PRD.",
+                "type": "security",
+                "status": "blocked",
+                "source": "",
+                "current_or_target": "target_state"
+            }
+        ],
+        "technology_stack": [
+            {
+                "layer": "Identity Provider",
+                "technology": "Open — not specified by PRD",
+                "status": "open"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Authentication Module",
+                "purpose": "Handles user identity verification via a PRD-specified identity provider.",
+                "responsibilities": [
+                    "Delegate authentication to configured provider",
+                    "Validate tokens",
+                    "Maintain session"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-001"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Authentication Gateway",
+                "purpose": "Technology-agnostic authentication boundary pending identity provider selection.",
+                "responsibilities": [
+                    "Redirect to identity provider",
+                    "Validate returned token"
+                ],
+                "inputs": [
+                    "Login request"
+                ],
+                "outputs": [
+                    "Authenticated session token"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "All requests must pass through authentication gateway.",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "apis": [],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "User Authentication",
+                "trigger": "User accesses a protected resource",
+                "actor": "",
+                "preconditions": [],
+                "steps": [
+                    "Redirect to identity provider (BLOCKED — provider unspecified)",
+                    "Receive token",
+                    "Validate token via CMP-001"
+                ],
+                "components": [
+                    "CMP-001"
+                ],
+                "apis": [],
+                "data_changes": [],
+                "failure_scenarios": [
+                    "Identity provider unavailable"
+                ],
+                "final_state": "BLOCKED pending Q-001 resolution"
+            }
+        ],
+        "blockers": [
+            {
+                "id": "B-001",
+                "text": "Identity provider is not specified in the PRD. The skill must NOT invent a provider (e.g. Azure AD, Okta, Auth0). This is an open architectural decision requiring explicit stakeholder input.",
+                "impact": "Authentication flow, token format, session handling, and API protection cannot be finalised."
+            }
+        ],
+        "open_questions": [
+            {
+                "id": "Q-001",
+                "question": "Which identity provider should the system use? Options include an external provider (Azure AD, Okta, Google), application-managed authentication, or another mechanism. The PRD does not specify.",
+                "impact": "Determines authentication flow, integration scope, token handling, and deployment dependencies."
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Identity provider recorded as Open Question — not invented",
+                "context": "PRD is silent on authentication provider",
+                "reason": "§21 and §40 prohibit inventing an identity provider. Prior defect (T-010) was exactly this — inventing Azure AD. This fixture confirms the fix is permanent.",
+                "alternative": "Select Azure AD or Okta as default",
+                "why_not_alternative": "No PRD authority — would violate §6 PRD-evidence-first principle",
+                "trade_offs": "Architecture cannot be fully specified until Q-001 is resolved",
+                "impact": "Authentication Gateway is technology-agnostic until provider is confirmed",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "validation": {
+            "requirements_covered": false,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": false,
+            "invariants_validated": false,
+            "consistency_check_passed": true
+        },
+        "assumptions": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": []
+    }
+}

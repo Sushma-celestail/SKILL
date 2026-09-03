@@ -1,0 +1,78 @@
+{
+  "report_type": "verification",
+  "skill_version": "1.3.0",
+  "artifact_path": "C:\\Users\\sushma.s\\Desktop\\Phases\\phase4\\test-fixtures\\T-001-small-module.json",
+  "generated_at": "2026-09-02T13:30:53.053Z",
+  "overall": "PASS",
+  "summary": {
+    "pass": 6,
+    "fail": 0,
+    "warn": 2,
+    "skip": 2
+  },
+  "checks": [
+    {
+      "check": "V-001",
+      "status": "PASS",
+      "message": "SKILL.md structure valid — frontmatter present, required sections found, no conflict markers",
+      "detail": null
+    },
+    {
+      "check": "V-002",
+      "status": "PASS",
+      "message": "JSON structure valid — required keys present, mode/tier valid, requirement statuses valid",
+      "detail": null
+    },
+    {
+      "check": "V-003",
+      "status": "PASS",
+      "message": "Stable IDs valid — 10 unique IDs across all arrays, all prefixes correct",
+      "detail": null
+    },
+    {
+      "check": "V-004",
+      "status": "PASS",
+      "message": "Cross-references valid — all cited IDs resolve within the architecture",
+      "detail": null
+    },
+    {
+      "check": "V-005",
+      "status": "PASS",
+      "message": "All 3 requirements have traceability entries or are correctly blocked",
+      "detail": null
+    },
+    {
+      "check": "V-006",
+      "status": "WARN",
+      "message": "2 requirements could not be traced to PRD index",
+      "detail": [
+        "REQ-002 source \"FR-002\" not found in PRD index — may be a derived requirement",
+        "REQ-003 source \"FR-003\" not found in PRD index — may be a derived requirement"
+      ]
+    },
+    {
+      "check": "V-007",
+      "status": "SKIP",
+      "message": "No Markdown artifact provided — skipping Markdown/JSON agreement check (run with --md)",
+      "detail": null
+    },
+    {
+      "check": "V-008",
+      "status": "SKIP",
+      "message": "No Markdown artifact provided — skipping Mermaid diagram check (run with --md)",
+      "detail": null
+    },
+    {
+      "check": "V-009",
+      "status": "WARN",
+      "message": "No .docx files found in artifact directory — §45 requires a .docx output every run",
+      "detail": null
+    },
+    {
+      "check": "V-010",
+      "status": "PASS",
+      "message": "Technology status values valid, no SQL detected, components have responsibilities",
+      "detail": null
+    }
+  ]
+}

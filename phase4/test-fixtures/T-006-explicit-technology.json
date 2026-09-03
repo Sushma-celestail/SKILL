@@ -1,0 +1,146 @@
+{
+    "fixture_id": "T-006",
+    "scenario": "Explicit technology stated in PRD",
+    "expected_checks": {
+        "technology_status": "prd_stated",
+        "no_substitution": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-006-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-006 test fixture — explicit technology"
+        },
+        "mode": "module",
+        "depth_tier": 1,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "The database must be PostgreSQL.",
+                "type": "constraint",
+                "status": "prd_stated",
+                "source": "TECH-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "The API must be implemented in Node.js.",
+                "type": "constraint",
+                "status": "prd_stated",
+                "source": "TECH-002",
+                "current_or_target": "target_state"
+            }
+        ],
+        "technology_stack": [
+            {
+                "layer": "Database",
+                "technology": "PostgreSQL",
+                "status": "prd_stated"
+            },
+            {
+                "layer": "API Server",
+                "technology": "Node.js",
+                "status": "prd_stated"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Data Store",
+                "purpose": "Persists application data using the PRD-mandated database.",
+                "responsibilities": [
+                    "Provide relational data storage using PostgreSQL"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-001"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "PostgreSQL Data Store",
+                "purpose": "Stores application data in PostgreSQL as required by the PRD.",
+                "responsibilities": [
+                    "Accept read and write operations",
+                    "Maintain data integrity"
+                ],
+                "inputs": [
+                    "Data access requests"
+                ],
+                "outputs": [
+                    "Query results",
+                    "Write confirmations"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Application records"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "apis": [],
+        "workflows": [],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": "technology_stack[0]"
+            },
+            {
+                "requirement_id": "REQ-002",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": "technology_stack[1]"
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "PostgreSQL is the database",
+                "context": "Explicitly required by PRD",
+                "reason": "PRD-Stated — §10 prohibits replacing PRD technologies",
+                "alternative": "MySQL, MongoDB",
+                "why_not_alternative": "PRD explicitly states PostgreSQL",
+                "trade_offs": "None — constrained by PRD",
+                "impact": "All data persistence uses PostgreSQL",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "blockers": [],
+        "open_questions": [],
+        "assumptions": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": [],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        }
+    }
+}

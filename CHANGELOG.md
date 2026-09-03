@@ -8,6 +8,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [1.4.0] — 2026-09-02
+
+**Summary:** Phase 4: Implemented verify.js (V-001–V-010 artifact verifier), architecture.schema.json (JSON Schema for §46 output), 8 test fixtures (T-001, T-004 through T-010), and run-verification-tests.js regression runner. Result: 8/8 fixtures pass. V-001 through V-010 all execute. Closes GAP-005, GAP-006, GAP-007, GAP-008.
+
+**Compatibility impact:** Additive. No existing skill sections modified. Phase 4 tooling validates existing artifact format.
+
+**Approver:** Skill Owner / Architecture Lead
+
+---
+
 ## [1.3.0] — 2026-09-02
 
 **Summary:** Phase 3: Implemented deterministic tier routing, validated tier overrides, seven Tier 1/2/3 fixtures, a repeatable routing test runner, and a live Tier 3 routing record for the Service Desk PRD index. Added routing evidence fields to §§41, 59, and 61.

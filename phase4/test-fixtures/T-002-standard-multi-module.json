@@ -1,0 +1,444 @@
+{
+    "fixture_id": "T-002",
+    "scenario": "Standard multi-module PRD — Tier 2 boundaries and workflows",
+    "expected_tier": 2,
+    "expected_checks": {
+        "tier": 2,
+        "mode": "application",
+        "all_requirements_traced": true,
+        "blockers": 0
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-002-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-002 test fixture — standard multi-module application"
+        },
+        "mode": "application",
+        "depth_tier": 2,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "Users must be able to register an account with email and password.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "Users must be able to log in using their registered credentials.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-002",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-003",
+                "text": "Users must be able to create, read, update and delete their own tasks.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-003",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-004",
+                "text": "Users must be able to assign tasks to other registered users.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-004",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-005",
+                "text": "The system must send an email notification when a task is assigned.",
+                "type": "integration",
+                "status": "prd_stated",
+                "source": "FR-005",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-006",
+                "text": "All API endpoints must require authentication.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "NFR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-007",
+                "text": "Task list retrieval must respond within 500ms under normal load.",
+                "type": "performance",
+                "status": "prd_stated",
+                "source": "NFR-002",
+                "current_or_target": "target_state"
+            }
+        ],
+        "actors": [
+            {
+                "id": "ACT-001",
+                "name": "Registered User",
+                "description": "A user with a verified account who can manage tasks."
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "User Module",
+                "purpose": "Manages user registration, authentication, and account state.",
+                "responsibilities": [
+                    "Handle registration",
+                    "Validate credentials",
+                    "Issue session tokens"
+                ],
+                "actors": [
+                    "ACT-001"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002",
+                    "REQ-006"
+                ]
+            },
+            {
+                "id": "MOD-002",
+                "name": "Task Module",
+                "purpose": "Manages task lifecycle including creation, updates, deletion, and assignment.",
+                "responsibilities": [
+                    "CRUD operations on tasks",
+                    "Enforce ownership rules",
+                    "Trigger assignment notifications"
+                ],
+                "actors": [
+                    "ACT-001"
+                ],
+                "components": [
+                    "CMP-003",
+                    "CMP-004"
+                ],
+                "dependencies": [
+                    "MOD-001"
+                ],
+                "related_requirements": [
+                    "REQ-003",
+                    "REQ-004",
+                    "REQ-005",
+                    "REQ-007"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "User Registration Service",
+                "purpose": "Handles new account creation and email verification.",
+                "responsibilities": [
+                    "Validate registration input",
+                    "Hash password",
+                    "Persist user record",
+                    "Send verification email"
+                ],
+                "inputs": [
+                    "Registration request"
+                ],
+                "outputs": [
+                    "User record",
+                    "Verification email"
+                ],
+                "dependencies": [
+                    "CMP-002"
+                ],
+                "owned_data": [
+                    "User account record"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            },
+            {
+                "id": "CMP-002",
+                "module_id": "MOD-001",
+                "name": "Authentication Service",
+                "purpose": "Validates credentials and issues session tokens.",
+                "responsibilities": [
+                    "Verify email and password",
+                    "Issue JWT token",
+                    "Enforce token expiry"
+                ],
+                "inputs": [
+                    "Login credentials"
+                ],
+                "outputs": [
+                    "JWT session token"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "All downstream calls require valid JWT.",
+                "related_requirements": [
+                    "REQ-002",
+                    "REQ-006"
+                ]
+            },
+            {
+                "id": "CMP-003",
+                "module_id": "MOD-002",
+                "name": "Task Service",
+                "purpose": "Manages task CRUD operations and enforces ownership.",
+                "responsibilities": [
+                    "Create, read, update and delete tasks",
+                    "Enforce user ownership",
+                    "Invoke notification on assignment"
+                ],
+                "inputs": [
+                    "Authenticated task request"
+                ],
+                "outputs": [
+                    "Task record",
+                    "Assignment event"
+                ],
+                "dependencies": [
+                    "CMP-004"
+                ],
+                "owned_data": [
+                    "Task records"
+                ],
+                "security_boundary": "Requires authenticated user context.",
+                "related_requirements": [
+                    "REQ-003",
+                    "REQ-004",
+                    "REQ-007"
+                ]
+            },
+            {
+                "id": "CMP-004",
+                "module_id": "MOD-002",
+                "name": "Notification Dispatcher",
+                "purpose": "Sends email notifications on task assignment.",
+                "responsibilities": [
+                    "Receive assignment events",
+                    "Send email via email provider"
+                ],
+                "inputs": [
+                    "Assignment event"
+                ],
+                "outputs": [
+                    "Dispatched email notification"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-005"
+                ]
+            }
+        ],
+        "apis": [
+            {
+                "id": "API-001",
+                "name": "User API",
+                "purpose": "Registration and authentication endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-001, CMP-002",
+                "operations": [
+                    "POST /users/register",
+                    "POST /users/login"
+                ],
+                "auth": "None on register/login",
+                "authz": "N/A",
+                "related_components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002"
+                ]
+            },
+            {
+                "id": "API-002",
+                "name": "Task API",
+                "purpose": "Task management endpoints.",
+                "consumer": "Frontend",
+                "provider": "CMP-003",
+                "operations": [
+                    "GET /tasks",
+                    "POST /tasks",
+                    "PUT /tasks/{id}",
+                    "DELETE /tasks/{id}"
+                ],
+                "auth": "JWT required",
+                "authz": "Owner only for update/delete",
+                "related_components": [
+                    "CMP-003"
+                ],
+                "related_requirements": [
+                    "REQ-003",
+                    "REQ-004",
+                    "REQ-006",
+                    "REQ-007"
+                ]
+            }
+        ],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "User Registration",
+                "trigger": "User submits registration form",
+                "actor": "ACT-001",
+                "preconditions": [],
+                "steps": [
+                    "User posts to API-001",
+                    "CMP-001 validates input",
+                    "CMP-001 hashes password and persists record",
+                    "Verification email sent"
+                ],
+                "components": [
+                    "CMP-001"
+                ],
+                "apis": [
+                    "API-001"
+                ],
+                "data_changes": [
+                    "User record created"
+                ],
+                "failure_scenarios": [
+                    "Email already registered — 409 Conflict"
+                ],
+                "final_state": "User account created; verification email sent"
+            },
+            {
+                "id": "WF-002",
+                "name": "Task Assignment",
+                "trigger": "Authenticated user assigns task to another user",
+                "actor": "ACT-001",
+                "preconditions": [
+                    "User authenticated",
+                    "Task exists",
+                    "Assignee is registered"
+                ],
+                "steps": [
+                    "User calls PUT /tasks/{id} with assignee_id",
+                    "CMP-003 validates ownership and assignee",
+                    "CMP-003 updates task record",
+                    "CMP-003 emits assignment event",
+                    "CMP-004 dispatches email notification asynchronously"
+                ],
+                "components": [
+                    "CMP-003",
+                    "CMP-004"
+                ],
+                "apis": [
+                    "API-002"
+                ],
+                "data_changes": [
+                    "task.assignee_id updated"
+                ],
+                "failure_scenarios": [
+                    "Assignee not found — 404",
+                    "Requestor not owner — 403"
+                ],
+                "final_state": "Task assigned; assignee notified by email"
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Notification dispatch is asynchronous",
+                "context": "CMP-004 is invoked after task update",
+                "reason": "Assignment notification should not block the API response",
+                "alternative": "Synchronous dispatch",
+                "why_not_alternative": "Would couple API latency to email provider availability",
+                "trade_offs": "Notification delivery is not guaranteed within the same transaction",
+                "impact": "CMP-004 must be idempotent",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-005"
+                ]
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-002",
+                "module_id": "MOD-001",
+                "component_id": "CMP-002",
+                "workflow_id": "",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-003",
+                "module_id": "MOD-002",
+                "component_id": "CMP-003",
+                "workflow_id": "",
+                "api_id": "API-002",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-004",
+                "module_id": "MOD-002",
+                "component_id": "CMP-003",
+                "workflow_id": "WF-002",
+                "api_id": "API-002",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-005",
+                "module_id": "MOD-002",
+                "component_id": "CMP-004",
+                "workflow_id": "WF-002",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-006",
+                "module_id": "MOD-001",
+                "component_id": "CMP-002",
+                "workflow_id": "",
+                "api_id": "API-002",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-007",
+                "module_id": "MOD-002",
+                "component_id": "CMP-003",
+                "workflow_id": "",
+                "api_id": "API-002",
+                "architecture_reference": ""
+            }
+        ],
+        "technology_stack": [],
+        "architecture_invariants": [],
+        "state_machines": [],
+        "entities": [],
+        "integrations": [],
+        "blockers": [],
+        "open_questions": [],
+        "assumptions": [],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        }
+    }
+}

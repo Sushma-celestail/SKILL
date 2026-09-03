@@ -1,0 +1,138 @@
+{
+    "fixture_id": "T-005",
+    "scenario": "Contradictory requirements",
+    "expected_checks": {
+        "both_facts_preserved": true,
+        "blocker_created": "B-001",
+        "no_silent_selection": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-005-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-005 test fixture — contradictory requirements"
+        },
+        "mode": "module",
+        "depth_tier": 1,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "The system must store all user activity logs for 90 days.",
+                "type": "non_functional",
+                "status": "prd_stated",
+                "source": "NFR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "User activity logs must be deleted immediately upon user account deletion (GDPR).",
+                "type": "non_functional",
+                "status": "prd_stated",
+                "source": "NFR-002",
+                "current_or_target": "target_state"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Audit Log Module",
+                "purpose": "Manages user activity log retention and deletion.",
+                "responsibilities": [
+                    "Store activity logs",
+                    "Enforce retention policy",
+                    "Handle deletion requests"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-001"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Log Retention Service",
+                "purpose": "Applies configured retention and deletion policies to activity logs.",
+                "responsibilities": [
+                    "Enforce 90-day retention",
+                    "Execute immediate deletion on account removal"
+                ],
+                "inputs": [
+                    "Log write request",
+                    "Account deletion event"
+                ],
+                "outputs": [
+                    "Retained log records",
+                    "Deletion confirmation"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Activity log records"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002"
+                ]
+            }
+        ],
+        "apis": [],
+        "workflows": [],
+        "blockers": [
+            {
+                "id": "B-001",
+                "text": "REQ-001 (retain logs 90 days) directly conflicts with REQ-002 (immediate deletion on account removal). Both facts preserved from PRD. Neither requirement was silently prioritised.",
+                "impact": "Log retention architecture cannot be finalised. A conflict resolution decision is required before delivery."
+            }
+        ],
+        "open_questions": [
+            {
+                "id": "Q-001",
+                "question": "When a user account is deleted, should activity logs be: (a) deleted immediately, (b) anonymised and retained, or (c) retained for the remainder of the 90-day period? Which requirement takes precedence?",
+                "impact": "Determines log store design, deletion workflow, and GDPR compliance posture."
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-002",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [],
+        "validation": {
+            "requirements_covered": false,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": false,
+            "consistency_check_passed": true
+        },
+        "assumptions": [],
+        "technology_stack": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": []
+    }
+}

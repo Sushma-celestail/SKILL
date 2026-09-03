@@ -1,0 +1,241 @@
+{
+    "fixture_id": "T-001",
+    "scenario": "Complete small module PRD",
+    "expected_tier": 1,
+    "description": "A single focused module PRD with fewer than 10 requirements, no integrations, and straightforward functionality. Expected output is Tier 1 with complete traceability.",
+    "expected_checks": {
+        "tier": 1,
+        "all_requirements_traced": true,
+        "no_invented_technology": true,
+        "blockers": 0,
+        "mode": "module"
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-001-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-001 test fixture — small module"
+        },
+        "mode": "module",
+        "depth_tier": 1,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "Users must be able to submit a feedback form with name, email, and message fields.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "Submitted feedback must be stored persistently.",
+                "type": "data",
+                "status": "prd_stated",
+                "source": "FR-002",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-003",
+                "text": "A confirmation message must be shown after successful submission.",
+                "type": "functional",
+                "status": "prd_stated",
+                "source": "FR-003",
+                "current_or_target": "target_state"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Feedback Module",
+                "purpose": "Captures and stores user feedback.",
+                "responsibilities": [
+                    "Render feedback form",
+                    "Validate input",
+                    "Persist submission",
+                    "Confirm to user"
+                ],
+                "actors": [
+                    "ACT-001"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-002",
+                    "REQ-003"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Feedback Form Controller",
+                "purpose": "Handles form submission and input validation.",
+                "responsibilities": [
+                    "Validate name, email, and message fields",
+                    "Invoke persistence service"
+                ],
+                "inputs": [
+                    "User form data"
+                ],
+                "outputs": [
+                    "Persisted feedback record",
+                    "Confirmation response"
+                ],
+                "dependencies": [
+                    "CMP-002"
+                ],
+                "owned_data": [],
+                "security_boundary": "Frontend validation only; backend validation required.",
+                "related_requirements": [
+                    "REQ-001",
+                    "REQ-003"
+                ]
+            },
+            {
+                "id": "CMP-002",
+                "module_id": "MOD-001",
+                "name": "Feedback Store",
+                "purpose": "Persists feedback submissions to the data store.",
+                "responsibilities": [
+                    "Write feedback record to persistent storage"
+                ],
+                "inputs": [
+                    "Validated feedback data"
+                ],
+                "outputs": [
+                    "Stored feedback record"
+                ],
+                "dependencies": [],
+                "owned_data": [
+                    "Feedback record"
+                ],
+                "security_boundary": "",
+                "related_requirements": [
+                    "REQ-002"
+                ]
+            }
+        ],
+        "apis": [
+            {
+                "id": "API-001",
+                "name": "Submit Feedback",
+                "purpose": "Accepts and stores a feedback submission.",
+                "consumer": "Frontend",
+                "provider": "CMP-001",
+                "operations": [
+                    "POST /feedback"
+                ],
+                "auth": "None — public endpoint",
+                "authz": "None",
+                "related_components": [
+                    "CMP-001"
+                ],
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "Submit Feedback",
+                "trigger": "User submits feedback form",
+                "actor": "ACT-001",
+                "preconditions": [
+                    "Form fields populated"
+                ],
+                "steps": [
+                    "User submits form",
+                    "CMP-001 validates fields",
+                    "CMP-002 persists record",
+                    "Confirmation shown to user"
+                ],
+                "components": [
+                    "CMP-001",
+                    "CMP-002"
+                ],
+                "apis": [
+                    "API-001"
+                ],
+                "data_changes": [
+                    "Feedback record created"
+                ],
+                "failure_scenarios": [
+                    "Validation failure — re-display form with error"
+                ],
+                "final_state": "Feedback stored; user sees confirmation"
+            }
+        ],
+        "actors": [
+            {
+                "id": "ACT-001",
+                "name": "End User",
+                "description": "Any user who submits feedback."
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "API-001",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-002",
+                "module_id": "MOD-001",
+                "component_id": "CMP-002",
+                "workflow_id": "WF-001",
+                "api_id": "",
+                "architecture_reference": ""
+            },
+            {
+                "requirement_id": "REQ-003",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [
+            {
+                "id": "ADR-001",
+                "decision": "Single module architecture",
+                "context": "Small scope — one form, one store",
+                "reason": "Minimum complexity rule §12",
+                "alternative": "Separate UI and data modules",
+                "why_not_alternative": "No justification for split at this scale",
+                "trade_offs": "Less flexible if scope expands",
+                "impact": "Simpler deployment",
+                "status": "accepted",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "validation": {
+            "requirements_covered": true,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": true,
+            "invariants_validated": true,
+            "consistency_check_passed": true
+        },
+        "blockers": [],
+        "open_questions": [],
+        "assumptions": [],
+        "technology_stack": [],
+        "architecture_invariants": []
+    }
+}

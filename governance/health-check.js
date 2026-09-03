@@ -34,6 +34,9 @@ const REQUIRED_FILES = [
     'references/enterprise-capability-roadmap.md',
     'phase3/tier-routing.js',
     'phase3/run-tier-routing-tests.js',
+    'phase4/verify.js',
+    'phase4/architecture.schema.json',
+    'phase4/run-verification-tests.js',
 ];
 
 // Files that are expected once the full package is assembled

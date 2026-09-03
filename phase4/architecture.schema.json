@@ -1,0 +1,492 @@
+{
+    "schema_meta": "http://json-schema.org/draft-07/schema#",
+    "schema_id": "architecture-skill/architecture.schema.json",
+    "title": "Architecture Skill Output Schema",
+    "description": "Validates architecture artifacts produced by the Architecture Skill (section 46, 47). Used by V-002.",
+    "type": "object",
+    "required": [
+        "architecture"
+    ],
+    "properties": {
+        "architecture": {
+            "type": "object",
+            "required": [
+                "metadata",
+                "mode",
+                "depth_tier",
+                "requirements"
+            ],
+            "properties": {
+                "metadata": {
+                    "type": "object",
+                    "required": [
+                        "architecture_version",
+                        "generated_date",
+                        "changelog"
+                    ],
+                    "properties": {
+                        "architecture_version": {
+                            "type": "string"
+                        },
+                        "prd_version_or_date": {
+                            "type": "string"
+                        },
+                        "generated_date": {
+                            "type": "string"
+                        },
+                        "supersedes_version": {
+                            "type": "string"
+                        },
+                        "changelog": {
+                            "type": "string"
+                        },
+                        "prd_sha256": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "mode": {
+                    "type": "string",
+                    "enum": [
+                        "application",
+                        "module"
+                    ]
+                },
+                "depth_tier": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "requirements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "text",
+                            "type",
+                            "status"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "text": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "functional",
+                                    "non_functional",
+                                    "business_rule",
+                                    "security",
+                                    "performance",
+                                    "constraint",
+                                    "dependency",
+                                    "data",
+                                    "integration",
+                                    "actor"
+                                ]
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": [
+                                    "prd_stated",
+                                    "architecturally_derived",
+                                    "proposed",
+                                    "blocked"
+                                ]
+                            },
+                            "source": {
+                                "type": "string"
+                            },
+                            "current_or_target": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "modules": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "purpose",
+                            "responsibilities"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "purpose": {
+                                "type": "string"
+                            },
+                            "responsibilities": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "actors": {
+                                "type": "array"
+                            },
+                            "components": {
+                                "type": "array"
+                            },
+                            "dependencies": {
+                                "type": "array"
+                            },
+                            "related_requirements": {
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "purpose",
+                            "responsibilities"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "module_id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "purpose": {
+                                "type": "string"
+                            },
+                            "responsibilities": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "inputs": {
+                                "type": "array"
+                            },
+                            "outputs": {
+                                "type": "array"
+                            },
+                            "dependencies": {
+                                "type": "array"
+                            },
+                            "owned_data": {
+                                "type": "array"
+                            },
+                            "security_boundary": {
+                                "type": "string"
+                            },
+                            "related_requirements": {
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
+                "apis": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "purpose"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "purpose": {
+                                "type": "string"
+                            },
+                            "consumer": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            },
+                            "operations": {
+                                "type": "array"
+                            },
+                            "auth": {
+                                "type": "string"
+                            },
+                            "authz": {
+                                "type": "string"
+                            },
+                            "related_components": {
+                                "type": "array"
+                            },
+                            "related_requirements": {
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
+                "workflows": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "trigger",
+                            "steps"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "trigger": {
+                                "type": "string"
+                            },
+                            "actor": {
+                                "type": "string"
+                            },
+                            "preconditions": {
+                                "type": "array"
+                            },
+                            "steps": {
+                                "type": "array",
+                                "minItems": 1
+                            },
+                            "components": {
+                                "type": "array"
+                            },
+                            "apis": {
+                                "type": "array"
+                            },
+                            "data_changes": {
+                                "type": "array"
+                            },
+                            "failure_scenarios": {
+                                "type": "array"
+                            },
+                            "final_state": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "architecture_decisions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "decision",
+                            "context",
+                            "reason",
+                            "status"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "decision": {
+                                "type": "string"
+                            },
+                            "context": {
+                                "type": "string"
+                            },
+                            "reason": {
+                                "type": "string"
+                            },
+                            "alternative": {
+                                "type": "string"
+                            },
+                            "why_not_alternative": {
+                                "type": "string"
+                            },
+                            "trade_offs": {
+                                "type": "string"
+                            },
+                            "impact": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": [
+                                    "proposed",
+                                    "accepted",
+                                    "rejected",
+                                    "deprecated",
+                                    "superseded"
+                                ]
+                            },
+                            "related_requirements": {
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
+                "requirement_traceability": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "requirement_id"
+                        ],
+                        "properties": {
+                            "requirement_id": {
+                                "type": "string"
+                            },
+                            "module_id": {
+                                "type": "string"
+                            },
+                            "component_id": {
+                                "type": "string"
+                            },
+                            "workflow_id": {
+                                "type": "string"
+                            },
+                            "api_id": {
+                                "type": "string"
+                            },
+                            "architecture_reference": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "blockers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "text",
+                            "impact"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "text": {
+                                "type": "string"
+                            },
+                            "impact": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "open_questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "question"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "question": {
+                                "type": "string"
+                            },
+                            "impact": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "validation": {
+                    "type": "object"
+                },
+                "downstream_handoff": {
+                    "type": "object"
+                },
+                "architecture_style": {
+                    "type": "object"
+                },
+                "technology_stack": {
+                    "type": "array"
+                },
+                "architecture_invariants": {
+                    "type": "array"
+                },
+                "actors": {
+                    "type": "array"
+                },
+                "state_machines": {
+                    "type": "array"
+                },
+                "entities": {
+                    "type": "array"
+                },
+                "integrations": {
+                    "type": "array"
+                },
+                "assumptions": {
+                    "type": "array"
+                },
+                "migration": {
+                    "type": "object"
+                },
+                "authentication": {
+                    "type": "object"
+                },
+                "authorization": {
+                    "type": "object"
+                },
+                "user_synchronization": {
+                    "type": "object"
+                },
+                "security": {
+                    "type": "object"
+                },
+                "notifications": {
+                    "type": "object"
+                },
+                "background_processing": {
+                    "type": "array"
+                },
+                "error_handling": {
+                    "type": "array"
+                },
+                "deployment": {
+                    "type": "object"
+                },
+                "scalability": {
+                    "type": "object"
+                },
+                "reliability": {
+                    "type": "object"
+                },
+                "observability": {
+                    "type": "object"
+                },
+                "dependencies": {
+                    "type": "array"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,146 @@
+{
+    "fixture_id": "T-004",
+    "scenario": "Missing critical authentication / boundary",
+    "expected_tier": 2,
+    "description": "PRD does not specify an identity provider. Expected: explicit blocker B-001 raised, no invented identity provider, authentication listed as open.",
+    "expected_checks": {
+        "has_blocker": "B-001",
+        "no_invented_identity_provider": true,
+        "authentication_open": true
+    },
+    "architecture": {
+        "metadata": {
+            "architecture_version": "v1.0",
+            "prd_version_or_date": "T-004-fixture",
+            "generated_date": "2026-09-02",
+            "supersedes_version": "N/A",
+            "changelog": "T-004 test fixture — missing authentication"
+        },
+        "mode": "application",
+        "depth_tier": 2,
+        "requirements": [
+            {
+                "id": "REQ-001",
+                "text": "Users must log in before accessing the application.",
+                "type": "security",
+                "status": "prd_stated",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            },
+            {
+                "id": "REQ-002",
+                "text": "Identity provider is not specified in the PRD.",
+                "type": "security",
+                "status": "blocked",
+                "source": "FR-001",
+                "current_or_target": "target_state"
+            }
+        ],
+        "modules": [
+            {
+                "id": "MOD-001",
+                "name": "Authentication Module",
+                "purpose": "Handles user identity verification.",
+                "responsibilities": [
+                    "Authenticate users via identity provider"
+                ],
+                "actors": [],
+                "components": [
+                    "CMP-001"
+                ],
+                "dependencies": [],
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "components": [
+            {
+                "id": "CMP-001",
+                "module_id": "MOD-001",
+                "name": "Authentication Gateway",
+                "purpose": "Delegates authentication to the configured identity provider.",
+                "responsibilities": [
+                    "Redirect to identity provider",
+                    "Validate token"
+                ],
+                "inputs": [
+                    "Login request"
+                ],
+                "outputs": [
+                    "Authenticated session"
+                ],
+                "dependencies": [],
+                "owned_data": [],
+                "security_boundary": "API boundary — all requests must be authenticated.",
+                "related_requirements": [
+                    "REQ-001"
+                ]
+            }
+        ],
+        "apis": [],
+        "workflows": [
+            {
+                "id": "WF-001",
+                "name": "User Login",
+                "trigger": "User accesses protected resource",
+                "actor": "",
+                "preconditions": [],
+                "steps": [
+                    "Redirect to identity provider (BLOCKED — provider unknown)",
+                    "Receive token",
+                    "Validate token"
+                ],
+                "components": [
+                    "CMP-001"
+                ],
+                "apis": [],
+                "data_changes": [],
+                "failure_scenarios": [
+                    "Identity provider unavailable"
+                ],
+                "final_state": "BLOCKED — cannot finalise until identity provider is confirmed"
+            }
+        ],
+        "blockers": [
+            {
+                "id": "B-001",
+                "text": "Identity provider is not specified in the PRD.",
+                "impact": "Authentication flow, token handling, session management, and API protection cannot be finalised. Architecture cannot proceed to delivery without this decision."
+            }
+        ],
+        "open_questions": [
+            {
+                "id": "Q-001",
+                "question": "Should authentication use an external identity provider (e.g. Azure AD, Okta), application-managed authentication, or another mechanism?",
+                "impact": "Determines authentication flow, integration requirements, and deployment dependencies."
+            }
+        ],
+        "requirement_traceability": [
+            {
+                "requirement_id": "REQ-001",
+                "module_id": "MOD-001",
+                "component_id": "CMP-001",
+                "workflow_id": "WF-001",
+                "api_id": "",
+                "architecture_reference": ""
+            }
+        ],
+        "architecture_decisions": [],
+        "validation": {
+            "requirements_covered": false,
+            "technology_constraints_respected": true,
+            "database_scope_respected": true,
+            "security_reviewed": true,
+            "traceability_complete": false,
+            "invariants_validated": false,
+            "consistency_check_passed": true
+        },
+        "assumptions": [],
+        "technology_stack": [],
+        "architecture_invariants": [],
+        "actors": [],
+        "state_machines": [],
+        "entities": []
+    }
+}

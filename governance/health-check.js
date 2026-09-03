@@ -37,6 +37,10 @@ const REQUIRED_FILES = [
     'phase4/verify.js',
     'phase4/architecture.schema.json',
     'phase4/run-verification-tests.js',
+    'phase5/release-gate.js',
+    'phase5/execution-metadata-logger.js',
+    'phase5/metrics-report.js',
+    'phase5/RELEASE-POLICY.md',
 ];
 
 // Files that are expected once the full package is assembled

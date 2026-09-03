@@ -1,0 +1,84 @@
+{
+  "run_id": "gate-1.4.0-2026-09-03",
+  "skill_version": "1.4.0",
+  "started_at": "2026-09-03T06:04:38.935Z",
+  "completed_at": "2026-09-03T06:04:38.935Z",
+  "source_hashes": [
+    {
+      "file": "SKILL.md",
+      "sha256": "b2893b1bbb7be230bd4594c8b425128623b32d72b7390b73d314f5532f537886"
+    },
+    {
+      "file": "skill-manifest.json",
+      "sha256": "4c45d3c70b8ae6530537c475f7b078946e1271ce978ff8a6a1dfb723ea4496e9"
+    },
+    {
+      "file": "references/enterprise-capability-roadmap.md",
+      "sha256": "1d3473bc7a3919fc102f53ca47e5e5520f46e6901193d200cecada91601b2681"
+    },
+    {
+      "file": "phase4/verify.js",
+      "sha256": "d0f545eae53c21c813bd2de211e332d11649d47e2acd3a74fade4c52411edbed"
+    },
+    {
+      "file": "phase4/architecture.schema.json",
+      "sha256": "5f2ca0f41cf46ec63574b1af36a3506e340df064db69c390ff1e2b7dc140c897"
+    }
+  ],
+  "artifact_hashes": [],
+  "validation_status": "PASS",
+  "blocker_ids": [],
+  "review_status": "approved-for-release",
+  "gate_results": [
+    {
+      "gate": "G-001",
+      "status": "PASS",
+      "message": "Skill version 1.4.0 matches manifest"
+    },
+    {
+      "gate": "G-002",
+      "status": "PASS",
+      "message": "Health report is HEALTHY: health-report-2026-09-03.md"
+    },
+    {
+      "gate": "G-003",
+      "status": "PASS",
+      "message": "PRD index present: prd-index-2026-09-02.json — 601 requirements indexed"
+    },
+    {
+      "gate": "G-004",
+      "status": "PASS",
+      "message": "Tier routing tests: 7/7 passed"
+    },
+    {
+      "gate": "G-005",
+      "status": "PASS",
+      "message": "Verification tests: 10/10 passed (V-001–V-010 / T-001–T-010)"
+    },
+    {
+      "gate": "G-006",
+      "status": "PASS",
+      "message": "Baseline audit report approved and signed: baseline-audit-report-v1.1.0.md"
+    },
+    {
+      "gate": "G-007",
+      "status": "PASS",
+      "message": "CHANGELOG.md present and mentions version 1.4.0"
+    },
+    {
+      "gate": "G-008",
+      "status": "PASS",
+      "message": "SKILL.md has no conflict markers"
+    },
+    {
+      "gate": "G-009",
+      "status": "PASS",
+      "message": "Git tag v1.4.0 exists"
+    },
+    {
+      "gate": "G-010",
+      "status": "PASS",
+      "message": "Status \"enterprise-governed-specification\" correctly reflects current maturity (not prematurely operational)"
+    }
+  ]
+}

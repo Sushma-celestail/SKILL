@@ -8,6 +8,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [1.5.0] — 2026-09-03
+
+**Summary:** Phase 5: Implemented release-gate.js (G-001 through G-010, 10/10 PASS), execution-metadata-logger.js (start/complete/list §61 compliance), metrics-report.js (§66 periodic metrics), RELEASE-POLICY.md (branching, roles, rollback, deviation, incident procedures), and CI pipeline (.github/workflows/ci.yml). Release gate APPROVED on first full run. Closes GAP-011 through GAP-014.
+
+**Compatibility impact:** Additive. No existing skill sections modified.
+
+**Approver:** Sushma S — Skill Owner / Architecture Lead
+
+---
+
 ## [1.4.0] — 2026-09-02
 
 **Summary:** Phase 4: Implemented verify.js (V-001–V-010 artifact verifier), architecture.schema.json (JSON Schema for §46 output), 8 test fixtures (T-001, T-004 through T-010), and run-verification-tests.js regression runner. Result: 8/8 fixtures pass. V-001 through V-010 all execute. Closes GAP-005, GAP-006, GAP-007, GAP-008.

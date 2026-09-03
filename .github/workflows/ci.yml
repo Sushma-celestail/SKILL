@@ -1,0 +1,131 @@
+name: Architecture Skill — CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  # ── Job 1: Repository Health Check ─────────────────────────────────────────
+  health-check:
+    name: Health Check (Phase 1)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run health checker
+        run: node governance/health-check.js --root .
+
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-report
+          path: governance/health-reports/
+
+  # ── Job 2: PRD Indexer (Phase 2) ────────────────────────────────────────────
+  prd-index:
+    name: PRD Source Index (Phase 2)
+    runs-on: ubuntu-latest
+    needs: health-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check PRD index exists
+        run: |
+          if [ -z "$(ls phase2/indexes/prd-index-*.json 2>/dev/null)" ]; then
+            echo "No PRD index found in phase2/indexes/ — run index_prd.js before committing"
+            exit 1
+          fi
+          echo "PRD index found:"
+          ls -la phase2/indexes/prd-index-*.json
+
+      - name: Check source hash record exists
+        run: |
+          if [ -z "$(ls phase2/indexes/prd-source-hash-*.json 2>/dev/null)" ]; then
+            echo "No source hash record found in phase2/indexes/"
+            exit 1
+          fi
+          echo "Source hash record found:"
+          ls -la phase2/indexes/prd-source-hash-*.json
+
+  # ── Job 3: Tier Routing Tests (Phase 3) ─────────────────────────────────────
+  tier-routing:
+    name: Tier Routing Tests (Phase 3)
+    runs-on: ubuntu-latest
+    needs: health-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run tier routing tests
+        run: node phase3/run-tier-routing-tests.js --fixtures phase3/fixtures --out phase3/reports
+
+      - name: Upload routing report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tier-routing-report
+          path: phase3/reports/
+
+  # ── Job 4: Verification Tests (Phase 4) ─────────────────────────────────────
+  verification:
+    name: Verification Tests V-001–V-010 / T-001–T-010 (Phase 4)
+    runs-on: ubuntu-latest
+    needs: health-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run verification regression tests
+        run: node phase4/run-verification-tests.js --fixtures phase4/test-fixtures --out phase4/reports
+
+      - name: Upload verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-test-report
+          path: phase4/reports/
+
+  # ── Job 5: Release Readiness Gate (Phase 5) ─────────────────────────────────
+  release-gate:
+    name: Release Readiness Gate (Phase 5)
+    runs-on: ubuntu-latest
+    needs: [ health-check, prd-index, tier-routing, verification ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run release gate check
+        run: node phase5/release-gate.js --root .
+
+      - name: Upload execution metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: execution-metadata
+          path: phase5/execution-metadata/

@@ -1,0 +1,18 @@
+{
+  "report_type": "metrics",
+  "skill_version": "1.4.0",
+  "generated_at": "2026-09-03T05:27:18.536Z",
+  "period_since": "all-time",
+  "total_runs": 1,
+  "passed_runs": 1,
+  "failed_runs": 0,
+  "in_progress_runs": 0,
+  "success_rate_pct": "100.0",
+  "avg_duration_ms": 12332,
+  "blocker_frequency": {},
+  "review_status_breakdown": {
+    "approved": 1,
+    "pending": 0,
+    "blocked": 0
+  }
+}

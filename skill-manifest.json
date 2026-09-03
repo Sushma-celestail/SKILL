@@ -1,6 +1,6 @@
 {
   "skill_name": "architecture-skill",
-  "skill_version": "1.4.0",
+  "skill_version": "1.5.0",
   "release_date": "2026-09-02",
   "status": "enterprise-governed-specification",
   "description": "Transforms a documented PRD into a complete, explainable, validated software architecture. Produces both human-readable (.md, .docx) and machine-readable (JSON) artifacts.",
@@ -10,9 +10,16 @@
   ],
   "external_references": [],
   "operational_readiness": "specified-not-yet-operational",
-  "maturity_phase": "Phase 4 — Verification and Regression Testing",
+  "maturity_phase": "Phase 5 — Governance and Operations",
   "approver": "Skill Owner / Architecture Lead",
   "changelog": [
+    {
+      "version": "1.5.0",
+      "date": "2026-09-03",
+      "summary": "Phase 5: Implemented release-gate.js (G-001 through G-010, 10/10 PASS), execution-metadata-logger.js (start/complete/list §61 compliance), metrics-report.js (§66 periodic metrics), RELEASE-POLICY.md (branching, roles, rollback, deviation, incident procedures), and CI pipeline (.github/workflows/ci.yml). Release gate APPROVED on first full run. Closes GAP-011 through GAP-014.",
+      "compatibility_impact": "Additive. No existing skill sections modified.",
+      "approver": "Sushma S — Skill Owner / Architecture Lead"
+    },
     {
       "version": "1.4.0",
       "date": "2026-09-02",
@@ -73,6 +80,14 @@
       "architecture.schema.json",
       "T-001 T-004 T-005 T-006 T-007 T-008 T-009 T-010 test fixtures",
       "run-verification-tests.js regression runner"
+    ],
+    "phase_5": [
+      "release-gate.js G-001 through G-010",
+      "execution-metadata-logger.js",
+      "metrics-report.js",
+      "RELEASE-POLICY.md",
+      "CI pipeline .github/workflows/ci.yml",
+      "release gate 10/10 PASS approved"
     ]
   }
 }

@@ -5,7 +5,7 @@
 **Skill Version:** 1.1.0  
 **Baseline Snapshot Reference:** `architecture-skill-enterprise-v1.1 / SKILL.md` — Git tag `v1.1.0` at `https://github.com/Sushma-celestail/SKILL.git`  
 **Approver Role:** Skill Owner / Architecture Lead  
-**Approver Name:** _(to be recorded when confirmed)_
+**Approver Name:** Sushma S
 
 ---
 
@@ -17,9 +17,8 @@
 | `skill-manifest.json` | Version source and changelog | Created at baseline |
 | `references/enterprise-capability-roadmap.md` | Supporting reference | Included in v1.1 package |
 
-> **Note:** Git is not currently in use. File identity is established by filename,
-> folder path, and content hash (see §6 below). A Git release tag is the
-> recommended future mechanism once a repository is initialised.
+> **Note:** Git repository is initialised at `https://github.com/Sushma-celestail/SKILL.git`.
+> Baseline is tagged `v1.1.0`. File hashes are recorded in §7 and in the health report.
 
 ---
 
